@@ -1,6 +1,6 @@
 ## Table of Contents
 
-- [Download_Linux_distro](#Download Linux distro)
+- [Download_Linux_distro](#download-linux-distro)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)

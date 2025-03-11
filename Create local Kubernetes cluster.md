@@ -24,10 +24,13 @@ We are going to create a Kubernetes cluster with 3 nodes: 1 master node, 2 worke
    I prefer to use VMware Fusion Pro (see my other article xxx)
    However, you an also use Hyper-V, UTM, Parallels, etc.
 2. Name the VM appropriately so you can identify it as master node (Example: master-node). You might want to do the same for its hostname. 
-3. Repeat step 1) and 2) for worker nodes. 
+3. Repeat step 1) and 2) for worker nodes.
 
+We should now have 3 usable VMs.
+
+<img width="545" alt="image" src="https://github.com/user-attachments/assets/1e2ddb3c-69a5-4a78-a116-5a86a9992bd4" />
 
 ## Install Kubernetes cluster using kubeadm
-The main article is located at [Creating a cluster with kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/). We will follow the instructions in that link and documented every steps or issues that are encountered. 
+Once the nodes are ready, it's time to create the Kubernetes cluster. The main article is located at [Creating a cluster with kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/). We will follow the instructions in that link and documented every steps or issues that are encountered. 
 
 ## License

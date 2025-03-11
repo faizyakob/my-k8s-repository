@@ -27,6 +27,7 @@ We are going to create a Kubernetes cluster with 3 nodes: 1 master node, 2 worke
 3. Repeat step 1) and 2) for worker nodes. 
 
 
-## Contributing
+## Install Kubernetes cluster using kubeadm
+The main article is located at [Creating a cluster with kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/). We will follow the instructions in that link and documented every steps or issues that are encountered. 
 
 ## License

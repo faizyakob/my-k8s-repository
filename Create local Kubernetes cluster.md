@@ -18,12 +18,10 @@ From this point, I'll be referring Ubuntu as distro of choice.
 
 ## Create 3 VMs from ISO image
 
-Note: Details on how to create a VM is in separate article [Create VM from ISO image file](https://github.com/faizyakob/my-linux-repo/blob/main/Create%20VM%20from%20ISO%20image%20file.md).
-
 We are going to create a Kubernetes cluster with 3 nodes: 1 master node, 2 worker nodes.
 
 1. Use any virtualization tools to install Ubuntu using the ISO image.
-   I prefer to use VMware Fusion Pro (see my other article xxx)
+   I prefer to use VMware Fusion Pro (see my other article [Create VM from ISO image file](https://github.com/faizyakob/my-linux-repo/blob/main/Create%20VM%20from%20ISO%20image%20file.md))
    However, you an also use Hyper-V, UTM, Parallels, etc.
 2. Name the VM appropriately so you can identify it as master node (Example: master-node). You might want to do the same for its hostname. 
 3. Repeat step 1) and 2) for worker nodes.

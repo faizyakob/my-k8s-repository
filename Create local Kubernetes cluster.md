@@ -7,6 +7,7 @@
 - [Step 3: Joining worker nodes to cluster (worker nodes only)](#step-3-joining-worker-nodes-to-cluster-worker-nodes-only)
 - [Step 4: Test cluster access (control node only)](#step-4-test-cluster-access-control-node-only)
 - [Step 5: Optional settings (control node only)](#step-5-optional-settings-control-node-only)
+- [Conclusion](#conclusion)
 
 ## Download a Linux distro 
 We are going to use this distro as host OS for the Kubernetes cluster nodes. 
@@ -471,14 +472,20 @@ This assume you will be using non-root user for managing the cluster, but you ca
    set shiftwidth=2
    EOF
    ```
-   
-   
-
 
    
 </details>
 
+## Conclusion
 
+Congratulations! 
+Your Kubernetes cluster is now deployed successfully and can start deploying applications for learning purposes. 
+
+> Note that his is a local Kubernetes cluster running on your host PC/machine. While it can initiates outgoing traffic, incoming traffic from public network is not possible, due to no public IP address availability.
+> If testing incoming traffic is your priority, you can deploy Kubernetes cluster using managed solutions like Azure Kubernetes Service (AKS) or Amazon Elastic Kubernetes Service (EKS).
+> However, you can still deploy applications from your host PC/machine.
+
+Happy experimenting! ❄️ ㊗️
 
 
 

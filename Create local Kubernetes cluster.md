@@ -207,8 +207,6 @@ crictl version
 
 >📌  Once all above steps are completed, we are done preparing basic requirement for the control node. Repeat [Step 1: Prepare each node](#step-1-prepare-each-node) above for each worker nodes before proceeding with Step 2.
 
-## License
-
 
 ## Step 2: Initiate Kubernetes cluster (control node only)
 > The following steps are run on control node.
@@ -356,7 +354,30 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ## Step 3: Joing worker nodes to cluster (worker nodes only)
 > The following steps are run on worker nodes.
 
+<details>
+  <summary>🎯 Join worker nodes to cluster</summary><br>
+<br>
 
+1. SSH into each worker node as root.
+2. Use the output of <code style="color : red">*kubeadm token*</code> command generated at the end of [Step 2: Initiate Kubernetes cluster (control node only)](#step-2-initiate-kubernetes-cluster-control-node-only), and run it on each worker node.
+   <br>
+   
+   ```
+   kubeadm join 172.16.121.176:6443 --token tdt1au.wcnly2j31r6rsg75 --discovery-token-ca-cert-hash sha256:<hashed value....>
+   ```
+   <br>
+   The worker nodes successfully joined the cluster if you managed to get the output "_This node has joined the cluster_".   
+   
+   <br>
+   <img width="1202" height="329" alt="image" src="https://github.com/user-attachments/assets/71959d9f-d1c8-4a2b-b200-11740937f265" />
+   <br>
+   <br>
+   <img width="1204" height="327" alt="image" src="https://github.com/user-attachments/assets/dae10477-355f-4e00-8b11-e710d4573747" />
+   <br>
+<br>
+3. Proceed to Step 4: Test cluster access
+   
+</details>
 
 
 

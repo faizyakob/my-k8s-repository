@@ -129,15 +129,67 @@ sysctl --system
 ```
 
 7. Verify containerd is running:
-> If everything is done correctly, containerd should be running at this point. If not, recheck previous steps that could have been missed.
+   > If everything is done correctly, containerd should be running at this point. If not, recheck previous steps that could have been missed.
 
 ```
 systemctl status containerd
 ```
-<img width="1858" height="494" alt="image" src="https://github.com/user-attachments/assets/bf05bd99-ef5a-4746-9eb6-5a89656822ac" />
+<img width="1858" height="494" alt="image" src="https://github.com/user-attachments/assets/bf05bd99-ef5a-4746-9eb6-5a89656822ac" /><br>
+
+<details>
+  <summary>🚀 Install kubeadm, kubelet and kubectl</summary><br>
+
+All three components are necessary for Kubernetes custer to run. <br>
+
+✅ kubeadm : Main tool for bootstrapping the cluster <br>
+✅ kubelet : Critical component that runs on every node, tasked with running containers and pods. <br>
+✅ kubectl : CLI to interact with Kubernetes cluster. It talks directly to API server. <br>
+
+1. Add Kubernetes directory to the local repository list.
+   > At the time of writing, latest Kubernetes version is v1.33.2, so we will use that.
+   > Check [Release History](https://kubernetes.io/releases/) to verify the latest version.
 
 
+```
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.33/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.33/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list
+```
+
+2. Update the node, install the packages and lock the version of each component.
+   > Locking the version is necessary to prevent automatic upgrades.
+   > If not sure of the supported version, use <code style="color : red">*apt-cache madison*</code> command to verify.
+
+```
+apt-get update
+apt-get install -y kubelet=1.33.2-1.1 kubeadm=1.33.2-1.1 kubectl=1.33.2-1.1
+apt-mark hold kubelet kubeadm kubectl
+```
+
+3. Enable the kubelet.
+   > Once kubelet is enabled, it will be looping in "activating" mode. This is expected, until we run <code style="color : red">*kubeadm --init*</code> command later. 
+
+```
+systemctl enable --now kubelet
+```
+<img width="3170" height="432" alt="image" src="https://github.com/user-attachments/assets/5cbba5fc-5b42-4962-8824-5ce4d03fdb3f" /><br>
    
+<details>
+  <summary>🚀 Install critctl><br>
+
+<br>
+Like kubectl, crictl is the CRI tool that kubelet uses to talk to container runtimes (containerd).
+
+> Check the latest crictl version on [CRICTL releases](https://github.com/kubernetes-sigs/cri-tools/releases).
+
+```
+export CRICTL_VERSION="v1.33.0"
+export CRICTL_ARCH=$(dpkg --print-architecture)
+wget https://github.com/kubernetes-sigs/cri-tools/releases/download/$CRICTL_VERSION/crictl-$CRICTL_VERSION-linux-$CRICTL_ARCH.tar.gz
+wget https://github.com/kubernetes-sigs/cri-tools/releases/download/$CRICTL_VERSION/crictl-$CRICTL_VERSION-linux-$CRICTL_ARCH.tar.gz
+rm -f crictl-$CRICTL_VERSION-linux-$CRICTL_ARCH.tar.gz
+```
+
+
 
 
   

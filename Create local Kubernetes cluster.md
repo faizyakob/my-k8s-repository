@@ -299,7 +299,7 @@ After few minutes, Cilium should successfully installed and running. Verify ever
 </details>
 
 <details>
-  <summary>🚀 Optional: Configure kubeconfig file for non-root</summary><br>
+  <summary>🍤 Optional: Configure kubeconfig file for non-root</summary><br>
 <br>
 
 If you did not run the recommended config file configuration during the kubeadm instantiation previously, now would be the good time to run it.<br>
@@ -309,7 +309,9 @@ mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
+
 <br>
+
 > The above configures kubeconfig file if you are planning to run the <code style="color : red">*kubectl*</code> commands using non-root user.
 > Using non-root user is preferable compares to root user, which has maximum privileges. 
 

@@ -18,7 +18,7 @@ From this point, I'll be referring Ubuntu as distro of choice.
 
 ## Create 3 VMs from ISO image
 
-We are going to create a Kubernetes cluster with 3 nodes: 1 master node, 2 worker nodes.
+We are going to create a Kubernetes cluster with 3 nodes: 1 master/control node, 2 worker nodes.
 
 1. Use any virtualization tools to install Ubuntu using the ISO image.
    I prefer to use VMware Fusion Pro (see my other article [Create VM from ISO image file](https://github.com/faizyakob/my-linux-repo/blob/main/Create%20VM%20from%20ISO%20image%20file.md))
@@ -197,10 +197,15 @@ crictl version
 ```
 <br>
 <img width="3126" height="358" alt="image" src="https://github.com/user-attachments/assets/d71c5b76-6815-401c-9ff8-833519efd1c4" />
+<br>
 
 >📌  We are done with the phase 1. Repeat Step 1 above for each worker nodes before proceeding
 
+## Step 2: Initiate Kubernetes cluster (control node only)
+> The following steps are run on control node.
 
+Control node hosts the Kubernetes core components like API server, controller manager, scheduler and etcd. Since we are using kubeadm, these components will be realized as static pods.<br>
+Control node also runs the Container Network Interface (CNI) plugin to provide networking for the whole cluster.<br>
 
   
 

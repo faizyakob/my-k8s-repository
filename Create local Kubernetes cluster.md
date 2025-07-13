@@ -2,8 +2,9 @@
 
 - [Download a Linux distro](#download-a-linux-distro)
 - [Create 3 VMs from ISO image](#create-3-vms-from-iso-image)
-- [Step 1](#step-1:-prepare-each-node)
+- [Step 1](#step-1-prepare-each-node)
 - [License](#license)
+- [Step 2](#step-2-initiate-kubernetes-cluster-control-node-only)
 
 ## Download a Linux distro 
 We are going to use this distro as host OS for the Kubernetes cluster nodes. 

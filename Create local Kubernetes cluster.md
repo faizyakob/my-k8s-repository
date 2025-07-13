@@ -179,7 +179,7 @@ systemctl enable --now kubelet
 </details>
    
 <details>
-  <summary>🚀 Install critctl><br>
+  <summary>🚀 Install critctl<br>
 
 <br>
 Like kubectl, crictl is the CRI tool that kubelet uses to talk to container runtimes (containerd).

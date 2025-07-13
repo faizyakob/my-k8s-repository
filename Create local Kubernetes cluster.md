@@ -378,6 +378,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
    <img width="1204" height="327" alt="image" src="https://github.com/user-attachments/assets/dae10477-355f-4e00-8b11-e710d4573747" />
    <br>
 <br>
+
 3. Proceed to [Step 4: Test cluster access (control node only)](#step-4-test-cluster-access-control-node-only).
    
 </details>

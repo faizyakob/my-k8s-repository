@@ -2,7 +2,7 @@
 
 - [Download a Linux distro](#download-a-linux-distro)
 - [Create 3 VMs from ISO image](#create-3-vms-from-iso-image)
-- [Contributing](#contributing)
+- [Step 1](#step-1:-prepare-each-node)
 - [License](#license)
 
 ## Download a Linux distro 
@@ -189,6 +189,16 @@ wget https://github.com/kubernetes-sigs/cri-tools/releases/download/$CRICTL_VERS
 rm -f crictl-$CRICTL_VERSION-linux-$CRICTL_ARCH.tar.gz
 ```
 
+Verify critctl is installed.<br>
+It should show the critctl version. Ignore the warning message ⚠️ . 
+
+```
+crictl version
+```
+<br>
+<img width="3126" height="358" alt="image" src="https://github.com/user-attachments/assets/d71c5b76-6815-401c-9ff8-833519efd1c4" />
+
+>📌  We are done with the phase 1. Repeat Step 1 above for each worker nodes before proceeding
 
 
 

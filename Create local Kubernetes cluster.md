@@ -53,6 +53,7 @@ sudo -i
 ```
 apt-get update && apt-get upgrade -y
 ```
+</details>
 
 <details>
   <summary>🚫 Disable swap</summary><br>
@@ -67,6 +68,7 @@ sed -i '/\/swap\.img/ s/^/#/' /etc/fstab
 
 Double check the last swap line is commented out successfully. If not, do so manually by editing the /etc/fstab file.
 <img width="1700" height="288" alt="image" src="https://github.com/user-attachments/assets/037e5271-7b97-4a3d-89df-f6c32913636a" />
+</details>
 
 <details>
   <summary>🚀 Install containerd</summary><br>
@@ -136,6 +138,7 @@ sysctl --system
 systemctl status containerd
 ```
 <img width="1858" height="494" alt="image" src="https://github.com/user-attachments/assets/bf05bd99-ef5a-4746-9eb6-5a89656822ac" /><br>
+</details>
 
 <details>
   <summary>🚀 Install kubeadm, kubelet and kubectl</summary><br>
@@ -173,6 +176,7 @@ apt-mark hold kubelet kubeadm kubectl
 systemctl enable --now kubelet
 ```
 <img width="3170" height="432" alt="image" src="https://github.com/user-attachments/assets/5cbba5fc-5b42-4962-8824-5ce4d03fdb3f" /><br>
+</details>
    
 <details>
   <summary>🚀 Install critctl><br>
@@ -199,6 +203,8 @@ crictl version
 <br>
 <img width="3126" height="358" alt="image" src="https://github.com/user-attachments/assets/d71c5b76-6815-401c-9ff8-833519efd1c4" />
 <br>
+
+</details>
 
 >📌  We are done with the phase 1. Repeat Step 1 above for each worker nodes before proceeding
 

@@ -3,7 +3,6 @@
 - [Download a Linux distro](#download-a-linux-distro)
 - [Create 3 VMs from ISO image](#create-3-vms-from-iso-image)
 - [Step 1: Prepare each node](#step-1-prepare-each-node)
-- [License](#license)
 - [Step 2: Initiate Kubernetes cluster (control node only)](#step-2-initiate-kubernetes-cluster-control-node-only)
 
 ## Download a Linux distro 
@@ -217,7 +216,84 @@ crictl version
 Control node hosts the Kubernetes core components like API server, controller manager, scheduler and etcd. Since we are using kubeadm, these components will be realized as static pods.<br>
 Control node also runs the Container Network Interface (CNI) plugin to provide networking for the whole cluster.<br>
 
-  
+<details>
+  <summary>✈️ Instantiate cluster with kubeadm</summary><br>
+
+We instantiate the cluster by using kubeadm. It will install the Kubernetes core components and generate necessary configuration files.
+
+```
+kubeadm init --kubernetes-version 1.33.2 --pod-network-cidr 192.168.0.0/16 --v=5
+```
+> Note: We also provide the _--pod-network-cidr_ option to let kubeadm knows the pod CIDR we want to use. 
+
+It will take a couple of minutes for the control plane to initiate. Instantiation logs will be output to the screen during the process.
+<br>
+<br>
+<img width="1680" height="524" alt="image" src="https://github.com/user-attachments/assets/327f9ece-e72d-4583-9104-707bea739cad" />
+
+There are few suggestions in the finished output related to the config file, which is recommended to be run. 
+
+```
+export KUBECONFIG=/etc/kubernetes/admin.conf
+```
+
+</details>
+
+<details>
+  <summary>✈️ Install Cilium CNI</summary><br>
+
+We still need a CNI plugin for cluster networking.<br>
+We will be using [Cilium](https://cilium.io/) as I found it the most straighforward in terms of installation.<br>
+
+1. Download CNI binary, verify the sum and move it to correct location. <br>
+
+```
+export CILIUM_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt)
+export CILIUM_ARCH=$(dpkg --print-architecture)
+# Download the Cilium CLI binary and its sha256sum
+curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/$CILIUM_VERSION/cilium-linux-$CILIUM_ARCH.tar.gz{,.sha256sum}
+
+# Verify sha256sum
+sha256sum --check cilium-linux-$CILIUM_ARCH.tar.gz.sha256sum
+
+# Move binary to correct location and remove tarball
+tar xzvf cilium-linux-$CILIUM_ARCH.tar.gz -C /usr/local/bin 
+rm cilium-linux-$CILIUM_ARCH.tar.gz{,.sha256sum}
+```
+<br>
+2. Verify Cilium CNI is installed.
+
+<br>
+
+```
+cilium version --client
+```
+
+<img width="1158" height="164" alt="image" src="https://github.com/user-attachments/assets/8212ed11-ae75-4066-99ef-962ad1159091" />
+<br>
+3. Install Cilium netowrk plugin, and wait for the CNI plugin to be installed.
+
+<br>
+
+```
+cilium install
+```
+
+<br>
+<img width="956" height="174" alt="image" src="https://github.com/user-attachments/assets/02c59a28-f6d6-4f5d-b4e2-64aecfce9c24" />
+<br>
+
+```
+cilium status --wait
+```
+
+<br>
+After few minutes, Cilium should successfully installed and running. Verify everything is OK✅ from the output. <br>
+<img width="1734" height="798" alt="image" src="https://github.com/user-attachments/assets/ba94c8ed-9c9a-4464-83f3-cbc5c38fa092" />
+
+
+
+</details>
 
 
 

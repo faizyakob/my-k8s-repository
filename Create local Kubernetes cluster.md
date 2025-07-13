@@ -201,6 +201,9 @@ crictl version
 
 >📌  We are done with the phase 1. Repeat Step 1 above for each worker nodes before proceeding
 
+## License
+
+
 ## Step 2: Initiate Kubernetes cluster (control node only)
 > The following steps are run on control node.
 

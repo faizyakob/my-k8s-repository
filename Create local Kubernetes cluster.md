@@ -5,6 +5,7 @@
 - [Step 1: Prepare each node](#step-1-prepare-each-node)
 - [Step 2: Initiate Kubernetes cluster (control node only)](#step-2-initiate-kubernetes-cluster-control-node-only)
 - [Step 3: Joining worker nodes to cluster (worker nodes only)](#step-3-joining-worker-nodes-to-cluster-worker-nodes-only)
+- [Step 4: Test cluster access (control node only)](#step-4-test-cluster-access-control-node-only)
 
 ## Download a Linux distro 
 We are going to use this distro as host OS for the Kubernetes cluster nodes. 
@@ -321,12 +322,13 @@ kubeadm token create --print-join-command
 <br>
 
 Keep note of the output that is generated, as we will use it for next step.
+<br>
 <img width="3168" height="130" alt="image" src="https://github.com/user-attachments/assets/e6e2cf0f-bfde-4a59-bd60-431e8c59f0ea" />
 
 
 <br>
 
-Proceed with Step 3: Joing worker nodes to cluster to create a complete cluster.
+Proceed with [Step 3: Joining worker nodes to cluster (worker nodes only)](#step-3-joining-worker-nodes-to-cluster-worker-nodes-only).
 
 <br>
 
@@ -376,7 +378,24 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
    <img width="1204" height="327" alt="image" src="https://github.com/user-attachments/assets/dae10477-355f-4e00-8b11-e710d4573747" />
    <br>
 <br>
-3. Proceed to Step 4: Test cluster access
+3. Proceed to [Step 4: Test cluster access (control node only)](#step-4-test-cluster-access-control-node-only).
+   
+</details>
+
+## Step 4: Test cluster access (control node only)
+> The following steps are run on control node.
+
+<br>
+<details>
+  <summary>🎯 Test commands to cluster </summary><br>
+<br>
+
+Back on control node, run <code style="color : red">*kubectl get nodes*</code> command as root.<br>
+You should now see all 3 nodes in the cluster. <br>
+> Note: If you also configured the config file for non-root user, you should be able to run the command as that user as well.
+<br>
+<img width="1294" height="566" alt="image" src="https://github.com/user-attachments/assets/4778b7a0-ea07-479a-9d7f-a6a2c53efc4d" />
+<br>
    
 </details>
 

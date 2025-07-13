@@ -231,7 +231,7 @@ It will take a couple of minutes for the control plane to initiate. Instantiatio
 <br>
 <img width="1680" height="524" alt="image" src="https://github.com/user-attachments/assets/327f9ece-e72d-4583-9104-707bea739cad" />
 
-There are few suggestions in the finished output related to the config file, which is recommended to be run. 
+There are few additional suggestions in the finished output related to the config file, which is recommended to be run. 
 
 ```
 export KUBECONFIG=/etc/kubernetes/admin.conf
@@ -269,9 +269,10 @@ rm cilium-linux-$CILIUM_ARCH.tar.gz{,.sha256sum}
 cilium version --client
 ```
 
-<img width="1158" height="164" alt="image" src="https://github.com/user-attachments/assets/8212ed11-ae75-4066-99ef-962ad1159091" />
+<img width="1158" height="164" alt="image" src="https://github.com/user-attachments/assets/8212ed11-ae75-4066-99ef-962ad1159091" /><br>
 <br>
-3. Install Cilium netowrk plugin, and wait for the CNI plugin to be installed.
+
+3. Install Cilium network plugin, and wait for the CNI plugin to be installed.
 
 <br>
 
@@ -288,14 +289,31 @@ cilium status --wait
 ```
 
 <br>
+
 After few minutes, Cilium should successfully installed and running. Verify everything is OK✅ from the output. <br>
+
 <img width="1734" height="798" alt="image" src="https://github.com/user-attachments/assets/ba94c8ed-9c9a-4464-83f3-cbc5c38fa092" />
 
 
 
 </details>
 
+<details>
+  <summary>🚀 Optional: Configure kubeconfig file for non-root</summary><br>
+<br>
 
+If you did not run the recommended config file configuration during the kubeadm instantiation previously, now would be the good time to run it.<br>
+
+```
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+<br>
+> The above configures kubeconfig file if you are planning to run the <code style="color : red">*kubectl*</code> commands using non-root user.
+> Using non-root user is preferable compares to root user, which has maximum privileges. 
+
+</details>
 
 
 

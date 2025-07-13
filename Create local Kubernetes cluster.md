@@ -408,6 +408,42 @@ Additionally, follow [Step 5: Optional settings (control node only)](#step-5-opt
 </details>
 
 ## Step 5: Optional settings (control node only)
+> The following steps are run on control node.
+
+<br>
+<details>
+  <summary>🌴 Additional setups </summary><br>
+<br>
+
+To make managing the cluster more easier, we setup additonal settings like below.
+This assume you will be using non-root user for managing the cluster, but you can repeat the step for root user as well if you wish. 
+<br>
+
+1. Install <code style="color : red">*kubectl*</code> completion
+   Kubectl completion allow us to use tab completion in the commands, for well-known Kubernetes objects or existing resources.
+   <br>
+   
+   ```
+   source <(kubectl completion bash)
+   echo "source <(kubectl completion bash)" >> ~/.bashrc
+   ```
+   <br>
+
+2. Set alias "k" for <code style="color : red">*kubectl*</code> command.
+   Alias makes the typing shorter.
+   ```
+   cat <<EOF | tee -a ~/.bashrc
+   alias k=kubectl
+   complete -o default -F __start_kubectl k
+   EOF
+   ```
+   Now you can just run <code style="color : red">*k get nodes*</code> instead of <code style="color : red">*kubectl get nodes*</code>.
+   
+
+
+   
+</details>
+
 
 
 

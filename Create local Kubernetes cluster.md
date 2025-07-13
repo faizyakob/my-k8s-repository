@@ -179,7 +179,7 @@ systemctl enable --now kubelet
 </details>
    
 <details>
-  <summary>🚀 Install critctl<br>
+  <summary>🚀 Install critctl</summary><br>
 
 <br>
 Like kubectl, crictl is the CRI tool that kubelet uses to talk to container runtimes (containerd).
@@ -206,7 +206,7 @@ crictl version
 
 </details>
 
->📌  We are done with the phase 1. Repeat Step 1 above for each worker nodes before proceeding
+>📌  Once all above steps are completed, we are done preparing basic requirement for the control node. Repeat [Step 1: Prepare each node](#step-1-prepare-each-node) above for each worker nodes before proceeding with Step 2.
 
 ## License
 

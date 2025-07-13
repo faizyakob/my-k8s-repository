@@ -299,6 +299,42 @@ After few minutes, Cilium should successfully installed and running. Verify ever
 </details>
 
 <details>
+  <summary>🏆 Verify cluster is ready!</summary><br>
+<br>
+
+Once CNI is installed, the Kubernetes cluster should be ready, albeit only consisting a control plane for now.<br>
+
+```
+kubetl get nodes
+```
+<br>
+
+<img width="1178" height="148" alt="image" src="https://github.com/user-attachments/assets/d9cada56-336f-46a0-831d-dac127cfd92d" /><br>
+
+<br>
+
+We now should run <code style="color : red">*kubeadm token*</code> command to generate token for worker nodes to join our cluster.
+<br>
+
+```
+kubeadm token create --print-join-command
+```
+<br>
+
+Keep note of the output that is generated, as we will use it for next step.
+<img width="3168" height="130" alt="image" src="https://github.com/user-attachments/assets/e6e2cf0f-bfde-4a59-bd60-431e8c59f0ea" />
+
+
+<br>
+
+Proceed with Step 3: Joing worker nodes to cluster to create a complete cluster.
+
+<br>
+
+
+</details>
+
+<details>
   <summary>🍤 Optional: Configure kubeconfig file for non-root</summary><br>
 <br>
 

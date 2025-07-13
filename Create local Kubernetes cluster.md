@@ -23,7 +23,7 @@ We are going to create a Kubernetes cluster with 3 nodes: 1 master node, 2 worke
 1. Use any virtualization tools to install Ubuntu using the ISO image.
    I prefer to use VMware Fusion Pro (see my other article [Create VM from ISO image file](https://github.com/faizyakob/my-linux-repo/blob/main/Create%20VM%20from%20ISO%20image%20file.md))
    However, you an also use Hyper-V, UTM, Parallels, etc.
-2. Name the VM appropriately so you can identify it as master node (Example: ng-voice-master). You might want to do the same for its hostname via <code style="color : red">hostnamectl</code> command. 
+2. Name the VM appropriately so you can identify it as master node (Example: ng-voice-master). You might want to do the same for its hostname via <code style="color : red">*hostnamectl*</code> command. 
 3. Repeat step 1) and 2) for worker nodes.
 
 We should now have 3 usable VMs.
@@ -38,6 +38,10 @@ Note we will be using the term 'node' onwards instead of VM, but they are interc
 ## Step 1: Prepare each node
 
 > Note: Do this for all nodes.
+> It will be easier to use *root* directly instead of *sudo*.
 
 SSH into the node, and upgrade the existing packages to latest versions. 
+
+👉 *sudo -i; apt-get update && apt-get upgrade -y*
+
 

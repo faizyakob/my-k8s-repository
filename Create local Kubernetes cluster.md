@@ -29,7 +29,8 @@ We are going to create a Kubernetes cluster with 3 nodes: 1 master node, 2 worke
 We should now have 3 usable VMs.
 
 
-<img width="545" alt="image" src="https://github.com/user-attachments/assets/1e2ddb3c-69a5-4a78-a116-5a86a9992bd4" />
+<img width="468" height="288" alt="image" src="https://github.com/user-attachments/assets/f4923585-3198-4ea2-9cb8-f1d80034633e" />
+
 
 ## Install Kubernetes cluster using kubeadm
 Once the nodes are ready, it's time to create the Kubernetes cluster. The main article is located at [Creating a cluster with kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/). We will follow the instructions in that link to install the latest Kubernetes version, and documented every steps or issues that are encountered. 
@@ -38,10 +39,112 @@ Note we will be using the term 'node' onwards instead of VM, but they are interc
 ## Step 1: Prepare each node
 
 > Note: Do this for all nodes.
-> It will be easier to use *root* directly instead of *sudo*.
 
-SSH into the node, and upgrade the existing packages to latest versions. 
+It will be easier to use *root* directly instead of *sudo*. Once you SSH into each node, run:
 
-👉 *sudo -i; apt-get update && apt-get upgrade -y*
+```
+sudo -i
+```
+
+<details>
+  <summary>🔧 Upgrade the existing packages</summary><br>
+
+```
+apt-get update && apt-get upgrade -y
+```
+
+<details>
+  <summary>🚫 Disable swap</summary><br>
+
+This step is **IMPORTANT**, otherwise the cluster instantiation will fail later. 
+> The reason behind disabling swap is to avoid some Kubernetes contents being written to temporary filesystem (tmpfs).<br>
+
+```
+swapoff -a
+sed -i '/\/swap\.img/ s/^/#/' /etc/fstab
+```
+
+Double check the last swap line is commented out successfully. If not, do so manually by editing the /etc/fstab file.
+<img width="1700" height="288" alt="image" src="https://github.com/user-attachments/assets/037e5271-7b97-4a3d-89df-f6c32913636a" />
+
+<details>
+  <summary>🚀 Install containerd</summary><br>
+
+Containerd is the default CRI for Kubernetes. As with all modern Linux distros, we need to configure it to use systemd as cgroup driver.<br>
+
+1. Download containerd from Docker, and add it to local repository list: 
+
+```
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+chmod a+r /etc/apt/keyrings/docker.asc
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+
+2. Update packages and install containerd: 
+
+```
+apt-get update
+apt-get install containerd.io -y
+```
+
+3. Configure containerd to use systemd as cgroup driver:
+
+```
+mkdir -p /etc/containerd
+containerd config default | tee /etc/containerd/config.toml
+sed -e 's/SystemdCgroup = false/SystemdCgroup = true/g' -i /etc/containerd/config.toml
+systemctl restart containerd
+systemctl enable containerd
+```
+
+4. Configure containerd to load _overlay_ and _br_netfilter_ modules:
+
+```
+cat <<EOF | tee /etc/modules-load.d/containerd.conf
+overlay
+br_netfilter
+EOF
+```
+
+5. Enable kernel parameters to allow traffic forwarding:
+
+```
+cat << EOF | tee /etc/sysctl.d/kubernetes.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+net.ipv4.ip_forward = 1
+EOF
+```
+
+6. Load the configured modules to make them effective:
+
+```
+modprobe overlay
+modprobe br_netfilter
+sysctl --system
+```
+
+7. Verify containerd is running:
+> If everything is done correctly, containerd should be running at this point. If not, recheck previous steps that could have been missed.
+
+```
+systemctl status containerd
+```
+<img width="1858" height="494" alt="image" src="https://github.com/user-attachments/assets/bf05bd99-ef5a-4746-9eb6-5a89656822ac" />
+
+
+   
+
+
+  
+
+
+
+
+
 
 

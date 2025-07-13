@@ -6,6 +6,7 @@
 - [Step 2: Initiate Kubernetes cluster (control node only)](#step-2-initiate-kubernetes-cluster-control-node-only)
 - [Step 3: Joining worker nodes to cluster (worker nodes only)](#step-3-joining-worker-nodes-to-cluster-worker-nodes-only)
 - [Step 4: Test cluster access (control node only)](#step-4-test-cluster-access-control-node-only)
+- [Step 5: Optional settings (control node only)](#step-5-optional-settings-control-node-only)
 
 ## Download a Linux distro 
 We are going to use this distro as host OS for the Kubernetes cluster nodes. 
@@ -397,8 +398,16 @@ You should now see all 3 nodes in the cluster. <br>
 <br>
 <img width="1294" height="566" alt="image" src="https://github.com/user-attachments/assets/4778b7a0-ea07-479a-9d7f-a6a2c53efc4d" />
 <br>
+
+👑 At this point you already have a working Kubernetes cluster! 🎆 🎆 🎆 <br>
+> Note: Every administrative actions are performed on the control node. You can sort of leave the worker nodes running in the background and focus on control node only.
+<br>
+
+Additionally, follow [Step 5: Optional settings (control node only)](#step-5-optional-settings-control-node-only) to make life easier working with Kubernetes.
    
 </details>
+
+## Step 5: Optional settings (control node only)
 
 
 

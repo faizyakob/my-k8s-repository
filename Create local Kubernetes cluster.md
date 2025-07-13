@@ -438,6 +438,40 @@ This assume you will be using non-root user for managing the cluster, but you ca
    EOF
    ```
    Now you can just run <code style="color : red">*k get nodes*</code> instead of <code style="color : red">*kubectl get nodes*</code>.
+   <br>
+   
+3. Reload or source the bash profile.
+   ```
+   source ~/.bashrc
+   ```
+   
+4. Install <code style="color : red">*jq*</code> and <code style="color : red">*strace*</code> for easier formatting and debugging respectively.
+   ```
+   sudo apt-get install jq strace -y
+   ```
+   
+6. Install Helm, the de-facto standard for deploying applications on Kubeernetes cluster.
+   ```
+   curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+   chmod 700 get_helm.sh
+   ./get_helm.sh
+   ```
+
+7. Install <code style="color : red">*etcdctl*</code> to interact with ETCD database on your cluster.
+   ```
+   sudo apt install etcd-client -y
+   ```
+
+8. Configure your text editor to ease YAML formatting.
+   I am using vim, so I will configure the following in my ~/.vimrc file.
+   ```
+   cat <<EOF | tee -a ~/.vimrc
+   set tabstop=2
+   set expandtab
+   set shiftwidth=2
+   EOF
+   ```
+   
    
 
 

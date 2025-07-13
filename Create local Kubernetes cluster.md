@@ -353,6 +353,10 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 </details>
 
+## Step 3: Joing worker nodes to cluster (worker nodes only)
+> The following steps are run on worker nodes.
+
+
 
 
 

@@ -4,7 +4,7 @@
 - [Create 3 VMs from ISO image](#create-3-vms-from-iso-image)
 - [Step 1: Prepare each node](#step-1-prepare-each-node)
 - [Step 2: Initiate Kubernetes cluster (control node only)](#step-2-initiate-kubernetes-cluster-control-node-only)
-- [Step 3: Joing worker nodes to cluster (worker nodes only)](#step-3-joining-worker-nodes-to-cluster-worker-nodes-only)
+- [Step 3: Joining worker nodes to cluster (worker nodes only)](#step-3-joining-worker-nodes-to-cluster-worker-nodes-only)
 
 ## Download a Linux distro 
 We are going to use this distro as host OS for the Kubernetes cluster nodes. 
@@ -352,7 +352,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 </details>
 
-## Step 3: Joing worker nodes to cluster (worker nodes only)
+## Step 3: Joining worker nodes to cluster (worker nodes only)
 > The following steps are run on worker nodes.
 
 <details>

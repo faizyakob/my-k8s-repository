@@ -341,7 +341,7 @@ Proceed with [Step 3: Joining worker nodes to cluster (worker nodes only)](#step
   <summary>🍤 Optional: Configure kubeconfig file for non-root</summary><br>
 <br>
 
-If you did not run the recommended config file configuration during the kubeadm instantiation previously, now would be the good time to run it.<br>
+If you did not run the recommended config file configuration during the kubeadm instantiation previously, now would be the good time to run it. Switch to regular or non-root user and run the following:<br>
 
 ```
 mkdir -p $HOME/.kube

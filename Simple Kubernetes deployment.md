@@ -103,5 +103,12 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
 
 ## Step 2: Helm deployment 🍣
 > Note: You can also manually deploy all YAML files in this section manually, but using Helm is easier.
+
++ Create a new folder, for example: /helm-node-mongo. Create sub-folder 
+  
+  ```
+  mkdir -p /helm-node-mongo
+  cd /helm-node-mongo
+  ```
   
 

@@ -339,7 +339,7 @@ Diagram below visualize the flow.
 
 ## Extra: YAML files
 
-All the YAML and source code files used in this tutorial is available at [ZIP](node-mongo-demo-helm.zip).
+All the YAML and source code files used in this tutorial are available at [ZIP](node-mongo-demo-helm.zip).
 
 
 

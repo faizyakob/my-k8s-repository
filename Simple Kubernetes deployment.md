@@ -1,6 +1,6 @@
 ## Table of Contents
 
-- [Introduction](#download-a-linux-distro)
+- [Introduction](#introduction)
 - [Pre-requisite](#pre-requisite)
 - [Step 1: Create source code files](#step-1-create-source-code-files)
 - [Step 2: Helm deployment](#step-2-helm-deployment)
@@ -10,11 +10,11 @@
 - [Conclusion](#conclusion)
 - [Extra: Scripts](#extra-scripts)
 
-## Introduction 🐚
+## Introduction
 I created this article to document how to create a simple web app deployment, utilizing Node.js and MongoDB. 
 The objective is to showcase the relationship between Kubernetes resources, primarily service and deployment. The Node.js will act as the front-end of the application, interfacing with incoming traffic and MongoDB is the backend. 
 
-## Pre-requisite 🍣
+## Pre-requisite
 
 The following tools, aside from a running Kubernetes cluster, must be installed on the machine running the commands. Normally this will be the master or control node.
 If you are using jumpbox, then they are installed on the jumpbox itself. 
@@ -24,7 +24,7 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
 
 > The steps below assume _root_ user.
 
-## Step 1: Create source code files 🍣
+## Step 1: Create source code files
 
 + Create a dedicated directory, for example: <code style="color : red">/node-mongo-demo</code>.
   
@@ -101,7 +101,7 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
   
   <img width="921" height="448" alt="image" src="https://github.com/user-attachments/assets/88c324a5-eaa8-4fa9-b5be-fc17c7c9e66a" />
 
-## Step 2: Helm deployment 🍣
+## Step 2: Helm deployment
 > Note: You can also manually deploy all YAML files in this section manually, but we want to demonstrate how Helm can simplify the task.
 
 + Create a new folder, for example: <code style="color : red">/helm-node-mongo</code>. Create sub-folder <code style="color : red">templates</code> to host _mongo-deployment.yaml_, _mongo-service.yaml_, _web-deployment.yaml_ and _web-service.yaml_.
@@ -253,7 +253,7 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
       ```
   </details>
 
-## Step 3: Install the Chart 🍣
+## Step 3: Install the Chart
 > Ensure you are in the same directory where _Chart.yaml_ is.
 
 + Install the Helm chart (we give it the name "myapp"):
@@ -275,4 +275,4 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
   <img width="2626" height="132" alt="image" src="https://github.com/user-attachments/assets/8152ea83-a83b-4b85-81ef-5aed168fc02a" />
 
 
-## Step 4: View the pods and services 🍣
+## Step 4: View the pods and services

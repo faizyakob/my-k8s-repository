@@ -491,23 +491,33 @@ Happy experimenting! ❄️ ㊗️
 ## Extra: Scripts
 
 This section contains scripts to simplify above steps. 
+> Note: It's not possible to simply step 3 & 4 above, as the output could be random.
 
 <br>
 <details>
-  <summary>📎 Step 1 script </summary><br>
-<br>   
+  <summary>📎 Step 1 script </summary><br> 
+   
 [Bash script](step-1-prepare-node.sh)
-<br>
+
 Upload this script to both master and worker nodes, change to root user, make it executable and run it.
 <br>
 </details>
 
 <details>
   <summary>📎 Step 2 script </summary><br>
-<br>   
 
-<br>
+[Bash script](step-2-initiate-master-node.sh)
+
 Upload this script to **master node only**, change to root user, make it executable and run it.
+<br>
+</details>
+
+<details>
+  <summary>📎 Step 5 script </summary><br>
+
+[Bash script](step-5-install-additional-tools.sh)
+
+Upload this script to **master node only**, change to normal user, make it executable and run it.
 <br>
 </details>
 

@@ -41,6 +41,7 @@ sleep 30
 cilium status --wait
 echo "Result...OK"
 echo "Cilium is now installed."
+export KUBECONFIG=/etc/kubernetes/admin.conf
 echo "Master node is ready."
 
 

@@ -53,7 +53,7 @@ echo "Result OK!"
 sleep 5
 
 # Step: Enable traffic forwarding
-echo "3.4 Enable traffic forwarding in kernel..."
+echo "Enable traffic forwarding in kernel..."
 cat << EOF | tee /etc/sysctl.d/kubernetes.conf &>> /var/log/$(hostname).log
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1

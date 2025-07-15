@@ -6,7 +6,7 @@
 - [Step 2: Helm deployment](#step-2-helm-deployment)
 - [Step 3: Install the Chart](#step-3-install-the-chart)
 - [Step 4: View the pods and services](#step-4-view-the-pods-and-services)
-- [Step 5: Optional settings (control node only)](#step-5-optional-settings-control-node-only)
+- [Step 5: Access the web app](#step-5-access-the-web-app)
 - [Conclusion](#conclusion)
 - [Extra: Scripts](#extra-scripts)
 
@@ -112,7 +112,7 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
 ## Step 2: Helm deployment
 > Note: You can also manually deploy all YAML files in this section manually, but we want to demonstrate how Helm can simplify the task.
 
-+ Create a new folder, for example: <code style="color : red">/helm-node-mongo</code>. Create sub-folder <code style="color : red">templates</code> to host _mongo-deployment.yaml_, _mongo-service.yaml_, _web-deployment.yaml_ and _web-service.yaml_.
++ 📕 Create a new folder, for example: <code style="color : red">/helm-node-mongo</code>. Create sub-folder <code style="color : red">templates</code> to host _mongo-deployment.yaml_, _mongo-service.yaml_, _web-deployment.yaml_ and _web-service.yaml_.
   
   ```
   mkdir -p /helm-node-mongo
@@ -271,7 +271,7 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
 ## Step 3: Install the Chart
 > Ensure you are in the same directory where _Chart.yaml_ is.
 
-+ Install the Helm chart (we give it the name "myapp"):
++ ⚓ Install the Helm chart (we give it the name "myapp"):
 
   ```
   helm install myapp .
@@ -291,3 +291,41 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
 
 
 ## Step 4: View the pods and services
+
+  🚀 View all the Kubernetes resources that are associated with the web app deployment:
+
+  ```
+  kubectl get pods -l 'app in (mongo,node-web)'
+  kubectl get svc
+  kubectl get deploy node-web
+  kubectl get deploy mongo
+  ```
+
+  <img width="1678" height="654" alt="image" src="https://github.com/user-attachments/assets/b702b703-02d7-44c2-a9c9-fbdefc7f7548" />
+
+## Step 5: Access the web app
+
+Once eveything is in placed, you can query the localhost destination via the NodePort exposed port, 30080.
+
+Either query using <code style="color : red">curl</code>, or access via web browser URL. 
+
+🚀 It should return successful result. 
+
+Using <code style="color : red">curl</code>:
+
+  <img width="1938" height="90" alt="image" src="https://github.com/user-attachments/assets/3fe95536-6842-455e-acfd-9109e52e6409" />
+  
+
+Using web browser:
+
+  <img width="1758" height="306" alt="image" src="https://github.com/user-attachments/assets/c0b356c6-370b-49d7-8d69-ab1c7821a324" />
+
+
+## Conclusion
+
+
+
+
+
+
+

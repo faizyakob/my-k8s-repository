@@ -97,18 +97,30 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
   # Push the image
   docker push stingray13/node-mongo-demo:latest
   ```
-+ You can verify if the image using Docker Hub to ensure image successfully uploaded.
++ You can verify using Docker Hub to ensure image successfully uploaded.
   
   <img width="921" height="448" alt="image" src="https://github.com/user-attachments/assets/88c324a5-eaa8-4fa9-b5be-fc17c7c9e66a" />
 
 ## Step 2: Helm deployment 🍣
-> Note: You can also manually deploy all YAML files in this section manually, but using Helm is easier.
+> Note: You can also manually deploy all YAML files in this section manually, but we want to demonstrate how Helm can simplify the task.
 
-+ Create a new folder, for example: /helm-node-mongo. Create sub-folder 
++ Create a new folder, for example: /helm-node-mongo. Create sub-folder templates to host mongo-deployment.yaml, mongo-service.yaml, web-deployment.yaml and web-service.yaml.
   
   ```
   mkdir -p /helm-node-mongo
   cd /helm-node-mongo
+  ```
+
+  At the end of this step, we should have something like this:
+  ```
+  helm-node-mongo/
+  ├── Chart.yaml
+  ├── values.yaml
+  ├── templates/
+  │   ├── mongo-deployment.yaml
+  │   ├── mongo-service.yaml
+  │   ├── web-deployment.yaml
+  │   └── web-service.yaml
   ```
   
 

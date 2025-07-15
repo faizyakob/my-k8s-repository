@@ -8,6 +8,7 @@
 - [Step 4: Test cluster access (control node only)](#step-4-test-cluster-access-control-node-only)
 - [Step 5: Optional settings (control node only)](#step-5-optional-settings-control-node-only)
 - [Conclusion](#conclusion)
+- [Extra: Scripts](#extra-scripts)
 
 ## Download a Linux distro 
 We are going to use this distro as host OS for the Kubernetes cluster nodes. 
@@ -486,6 +487,23 @@ Your Kubernetes cluster is now deployed successfully and can start deploying app
 > However, you can still deploy applications from your host PC/machine.
 
 Happy experimenting! ❄️ ㊗️
+
+## Extra: Scripts
+
+This section contains scripts to simplify above steps. 
+
+<br>
+<details>
+  <summary>📎 Step 1 script </summary><br>
+<br>
+
+Upload this script to master node, change to root user, make it executable and run it.
+
+<br>
+   
+</details>
+
+
 
 
 

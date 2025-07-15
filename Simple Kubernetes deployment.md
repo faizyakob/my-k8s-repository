@@ -26,7 +26,7 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
 
 ## Step 1: Create source code files 🍣
 
-+ Create a dedicated directory, for example: /node-mongo-demo.
++ Create a dedicated directory, for example: <code style="color : red">/node-mongo-demo</code>.
   
   ```
   mkdir -p /node-mongo-demo
@@ -104,7 +104,7 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
 ## Step 2: Helm deployment 🍣
 > Note: You can also manually deploy all YAML files in this section manually, but we want to demonstrate how Helm can simplify the task.
 
-+ Create a new folder, for example: /helm-node-mongo. Create sub-folder templates to host mongo-deployment.yaml, mongo-service.yaml, web-deployment.yaml and web-service.yaml.
++ Create a new folder, for example: <code style="color : red">/helm-node-mongo</code>. Create sub-folder <code style="color : red">templates</code> to host _mongo-deployment.yaml_, _mongo-service.yaml_, _web-deployment.yaml_ and _web-service.yaml_.
   
   ```
   mkdir -p /helm-node-mongo
@@ -122,5 +122,125 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
   │   ├── web-deployment.yaml
   │   └── web-service.yaml
   ```
+
+  The content of each file is as follows:
+
+    + _Chart.yaml_
+      
+      ```
+      apiVersion: v2
+      name: node-mongo
+      version: 0.1.0
+      description: A simple Node.js + MongoDB app on Kubernetes
+      ```
+
+    + _values.yaml_
+      
+      ```
+      web:
+        image: faizyakob/node-mongo-demo
+        tag: latest
+        port: 3000
+
+      mongo:
+        user: admin
+        password: admin123
+        port: 27017
+      ```
+      
+    + _templates/mongo-deployment.yaml_
+ 
+      ```
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: mongo
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: mongo
+        template:
+          metadata:
+            labels:
+              app: mongo
+        spec:
+          containers:
+          - name: mongo
+            image: mongo:5
+            ports:
+            - containerPort: {{ .Values.mongo.port }}
+            env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              value: {{ .Values.mongo.user }}
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              value: {{ .Values.mongo.password }}
+            volumeMounts:
+            - name: mongo-data
+              mountPath: /data/db
+          volumes:
+          - name: mongo-data
+            emptyDir: {}
+      ```
+      
+    + _templates/mongo-service.yaml_
+      
+      ```
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: mongo
+      spec:
+        ports:
+        - port: {{ .Values.mongo.port }}
+      selector:
+        app: mongo
+      ```
+
+    + _templates/web-deployment.yaml_
+ 
+      ```
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: node-web
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: node-web
+      template:
+        metadata:
+          labels:
+            app: node-web
+        spec:
+          containers:
+          - name: node-web
+              image: {{ .Values.web.image }}:{{ .Values.web.tag }}
+              ports:
+              - containerPort: {{ .Values.web.port }}
+              env:
+              - name: MONGO_URL
+                value: mongodb://{{ .Values.mongo.user }}:{{ .Values.mongo.password }}@mongo:27017
+      ```
+
+    + _templates/web-service.yaml_
+
+      ```
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: node-web
+      spec:
+        type: NodePort
+        ports:
+        - port: 80
+          targetPort: {{ .Values.web.port }}
+          nodePort: 30080
+        selector:
+        app: node-web
+      ```
+
+      
   
 

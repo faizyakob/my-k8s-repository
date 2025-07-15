@@ -32,9 +32,11 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
   mkdir -p /node-mongo-demo
   cd /node-mongo-demo
   ```
+  
   We will house all source code files here.
 
 + Create a file named _server.js_ with below content. This is our Node.js web app code.
+  
   ```
   const express = require('express');
   const mongoose = require('mongoose');
@@ -55,7 +57,9 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
     console.log(`🟢 Server running at http://localhost:${port}`);
   });
   ```
+  
 + Create a file named _package.json_ with below content.
+  
   ```
   {
   "name": "node-mongo-demo",
@@ -70,7 +74,9 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
   }
   }
   ```
+  
 + Create a _Dockerfile_.
+  
   ```
   FROM node:18-alpine
 
@@ -82,6 +88,7 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
   EXPOSE 3000
   CMD ["npm", "start"]
   ```
+  
 + Build the new image using the _Dockerfile_.
   > You will have to login to Docker first before pushing your image.
 
@@ -97,6 +104,7 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
   # Push the image
   docker push stingray13/node-mongo-demo:latest
   ```
+  
 + You can verify using Docker Hub to ensure image successfully uploaded.
   
   <img width="921" height="448" alt="image" src="https://github.com/user-attachments/assets/88c324a5-eaa8-4fa9-b5be-fc17c7c9e66a" />
@@ -112,6 +120,7 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
   ```
 
   At the end of this step, we should have something like this:
+  
   ```
   helm-node-mongo/
   ├── Chart.yaml
@@ -128,18 +137,19 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
   <details>
   <summary>📃 Chart.yaml</summary><br>
 
-      ```
+    
       apiVersion: v2
       name: node-mongo
       version: 0.1.0
       description: A simple Node.js + MongoDB app on Kubernetes
-      ```
+     
+  
   </details>
 
   <details>
   <summary>📃 values.yaml</summary><br>
       
-      ```
+      
       web:
         image: faizyakob/node-mongo-demo
         tag: latest
@@ -149,13 +159,14 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
         user: admin
         password: admin123
         port: 27017
-      ```
+ 
+  
   </details>
       
   <details>
   <summary>📃 templates/mongo-deployment.yaml</summary><br>
  
-      ```
+      
       apiVersion: apps/v1
       kind: Deployment
       metadata:
@@ -186,13 +197,14 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
           volumes:
           - name: mongo-data
             emptyDir: {}
-      ```
+      
+  
   </details>
   
   <details>
   <summary>📃 templates/mongo-service.yaml</summary><br>
       
-      ```
+      
       apiVersion: v1
       kind: Service
       metadata:
@@ -202,13 +214,14 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
         - port: {{ .Values.mongo.port }}
       selector:
         app: mongo
-      ```
+      
+  
   </details>
 
   <details>
   <summary>📃 templates/web-deployment.yaml</summary><br>
  
-      ```
+     
       apiVersion: apps/v1
       kind: Deployment
       metadata:
@@ -231,13 +244,14 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
               env:
               - name: MONGO_URL
                 value: mongodb://{{ .Values.mongo.user }}:{{ .Values.mongo.password }}@mongo:27017
-      ```
+     
+  
   </details>
 
   <details>
   <summary>📃 templates/web-service.yaml</summary><br>
 
-      ```
+     
       apiVersion: v1
       kind: Service
       metadata:
@@ -250,7 +264,8 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
           nodePort: 30080
         selector:
         app: node-web
-      ```
+      
+  
   </details>
 
 ## Step 3: Install the Chart

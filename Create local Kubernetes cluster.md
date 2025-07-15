@@ -495,12 +495,20 @@ This section contains scripts to simplify above steps.
 <br>
 <details>
   <summary>📎 Step 1 script </summary><br>
+<br>   
+[Bash script](step-1-prepare-node.sh)
 <br>
+Upload this script to both master and worker nodes, change to root user, make it executable and run it.
+<br>
+</details>
 
-Upload this script to master node, change to root user, make it executable and run it.
+<details>
+  <summary>📎 Step 2 script </summary><br>
+<br>   
 
 <br>
-   
+Upload this script to **master node only**, change to root user, make it executable and run it.
+<br>
 </details>
 
 

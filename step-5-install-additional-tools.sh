@@ -38,10 +38,6 @@ set expandtab
 set shiftwidth=2
 EOF
 
-echo "Configuring config file for normal user..."
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
 sleep 3
 
 echo "Finished. Tools instaleed successfully."

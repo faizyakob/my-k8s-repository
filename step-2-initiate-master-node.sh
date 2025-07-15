@@ -44,4 +44,6 @@ echo "Cilium is now installed."
 export KUBECONFIG=/etc/kubernetes/admin.conf
 echo "Master node is ready."
 
+echo "You should now generate token by running: 'kubeadm token create --print-join-command' on this node, and run its output on each worker node."
+
 

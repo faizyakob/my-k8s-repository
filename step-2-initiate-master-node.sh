@@ -41,5 +41,6 @@ sleep 30
 cilium status --wait
 echo "Result...OK"
 echo "Cilium is now installed."
+echo "Master node is ready."
 
 

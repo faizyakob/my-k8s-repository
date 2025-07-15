@@ -4,8 +4,8 @@
 - [Pre-requisite](#pre-requisite)
 - [Step 1: Create source code files](#step-1-create-source-code-files)
 - [Step 2: Helm deployment](#step-2-helm-deployment)
-- [Step 3: Joining worker nodes to cluster (worker nodes only)](#step-3-joining-worker-nodes-to-cluster-worker-nodes-only)
-- [Step 4: Test cluster access (control node only)](#step-4-test-cluster-access-control-node-only)
+- [Step 3: Install the Chart](#step-3-install-the-chart)
+- [Step 4: View the pods and services](#step-4-view-the-pods-and-services)
 - [Step 5: Optional settings (control node only)](#step-5-optional-settings-control-node-only)
 - [Conclusion](#conclusion)
 - [Extra: Scripts](#extra-scripts)
@@ -125,16 +125,19 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
 
   The content of each file is as follows:
 
-    + _Chart.yaml_
-      
+  <details>
+  <summary>📃 Chart.yaml</summary><br>
+
       ```
       apiVersion: v2
       name: node-mongo
       version: 0.1.0
       description: A simple Node.js + MongoDB app on Kubernetes
       ```
+  </details>
 
-    + _values.yaml_
+  <details>
+  <summary>📃 values.yaml</summary><br>
       
       ```
       web:
@@ -147,8 +150,10 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
         password: admin123
         port: 27017
       ```
+  </details>
       
-    + _templates/mongo-deployment.yaml_
+  <details>
+  <summary>📃 templates/mongo-deployment.yaml</summary><br>
  
       ```
       apiVersion: apps/v1
@@ -182,8 +187,10 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
           - name: mongo-data
             emptyDir: {}
       ```
-      
-    + _templates/mongo-service.yaml_
+  </details>
+  
+  <details>
+  <summary>📃 templates/mongo-service.yaml</summary><br>
       
       ```
       apiVersion: v1
@@ -196,8 +203,10 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
       selector:
         app: mongo
       ```
+  </details>
 
-    + _templates/web-deployment.yaml_
+  <details>
+  <summary>📃 templates/web-deployment.yaml</summary><br>
  
       ```
       apiVersion: apps/v1
@@ -223,8 +232,10 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
               - name: MONGO_URL
                 value: mongodb://{{ .Values.mongo.user }}:{{ .Values.mongo.password }}@mongo:27017
       ```
+  </details>
 
-    + _templates/web-service.yaml_
+  <details>
+  <summary>📃 templates/web-service.yaml</summary><br>
 
       ```
       apiVersion: v1
@@ -240,7 +251,28 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
         selector:
         app: node-web
       ```
+  </details>
 
-      
+## Step 3: Install the Chart 🍣
+> Ensure you are in the same directory where _Chart.yaml_ is.
+
++ Install the Helm chart (we give it the name "myapp"):
+
+  ```
+  helm install myapp .
+  ```
+
+  The command will display the status of the Helm chart.
   
+  <img width="1192" height="302" alt="image" src="https://github.com/user-attachments/assets/cbe88087-79f6-4c44-a792-a4d12152c1df" />
 
++ Verify the Helm chart is successfully running:
+
+  ```
+  helm list
+  ```
+
+  <img width="2626" height="132" alt="image" src="https://github.com/user-attachments/assets/8152ea83-a83b-4b85-81ef-5aed168fc02a" />
+
+
+## Step 4: View the pods and services 🍣

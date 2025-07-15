@@ -8,7 +8,7 @@
 - [Step 4: View the pods and services](#step-4-view-the-pods-and-services)
 - [Step 5: Access the web app](#step-5-access-the-web-app)
 - [Conclusion](#conclusion)
-- [Extra: Scripts](#extra-scripts)
+- [Extra: YAML files](#extra-yaml-files)
 
 ## Introduction
 I created this article to document how to create a simple web app deployment, utilizing Node.js and MongoDB. 
@@ -307,11 +307,11 @@ If you are using jumpbox, then they are installed on the jumpbox itself.
 
 Once eveything is in placed, you can query the localhost destination via the NodePort exposed port, 30080.
 
-Either query using <code style="color : red">curl</code>, or access via web browser URL. 
+Either query using <code style="color : red">_curl_</code>, or access via web browser URL. 
 
 🚀 It should return successful result. 
 
-Using <code style="color : red">curl</code>:
+Using <code style="color : red">_curl_</code>:
 
   <img width="1938" height="90" alt="image" src="https://github.com/user-attachments/assets/3fe95536-6842-455e-acfd-9109e52e6409" />
   
@@ -323,9 +323,23 @@ Using web browser:
 
 ## Conclusion
 
+This section describe on high-level of the above web app deployment setup. 
+
+In brief, we deployed 2 services and 2 deployments, each serving different section of the traffic flow. 
+
+The front-end consists of **node-web service** and **node-web deployment**. 
+The **node-web service** accepts incoming traffic via its exposed NodePort port, 30080 (or 30001) and distribute it to the pod of **node-web deployment**. We only have a sinle replica in this setup, but we can easily scale up the deployment.
+
+The back-end consists of **mongo service** and **mongo deployment**. After being processed by the front-end, the node-web pod sends the traffic to **mongo service** using the URL defined in its container environment, and the **mongo service** distribute the traffic to pods of **mongo deployment**. Again, we only have a single replica for education purposes. 
+
+Diagram below visualize the flow.
+
+<img width="1536" height="1024" alt="External" src="https://github.com/user-attachments/assets/e06b7f36-21c1-4ee4-850f-01fc033c3222" />
 
 
+## Extra: YAML files
 
+All the YAML and source code files used in this tutorial is available at 
 
 
 

@@ -91,7 +91,7 @@ sleep 10
 echo "Result OK!"
 
 # Step: Enabling kubelet
-echo "Enbaling kubelet..."
+echo "Enabling kubelet..."
 systemctl enable --now kubelet
 sleep 5
 echo "Result OK!"

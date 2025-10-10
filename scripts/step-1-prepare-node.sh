@@ -9,7 +9,9 @@ sleep 1
 # Step: Disable swap
 echo "Disabling the swap."
 swapoff -a
-sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+sed -i '/[[:space:]]swap[[:space:]]/ s/^/#/' /etc/fstab
+sleep 3
+systemctl daemon-reload
 echo "Result...OK"
 sleep 8
 

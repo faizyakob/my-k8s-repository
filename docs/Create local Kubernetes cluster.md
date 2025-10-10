@@ -497,7 +497,7 @@ This section contains scripts to simplify above steps.
 <details>
   <summary>📎 Step 1 script </summary><br> 
    
-[Bash script](scripts/step-1-prepare-node.sh)
+[Bash script](/scripts/step-1-prepare-node.sh)
 
 Upload this script to both master and worker nodes, change to root user, make it executable and run it.
 <br>
@@ -506,7 +506,7 @@ Upload this script to both master and worker nodes, change to root user, make it
 <details>
   <summary>📎 Step 2 script </summary><br>
 
-[Bash script](scripts/step-2-initiate-master-node.sh)
+[Bash script](/scripts/step-2-initiate-master-node.sh)
 
 Upload this script to **master node only**, change to root user, make it executable and run it.
 <br>

@@ -36,6 +36,7 @@ This is applicable if you follow steps in [Create local Kubernetes cluster](<Cre
 ## Mitigation
 😇
 The fix, is to make Kubelet waits until the networking stack is fully initialized. 
+Do both following steps on all nodes.
 
 ### Step 1: Enable systemd-networkd-wait-online.service
 

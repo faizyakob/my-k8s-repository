@@ -30,7 +30,7 @@ When this happened, CNI pods (Cilium, for example) won't be able to run, which w
 This is applicable if you follow steps in [Create local Kubernetes cluster](<Create local Kubernetes cluster.md>) to build your own Kubernetes cluster. Clusters hosted on the cloud are less susceptible, being their nodes are always running. 
 
 ## Mitigation
-
+😇
 The fix, is to make Kubelet waits until the networking stack is fully initialized. 
 
 ### Step 1: Enable systemd-networkd-wait-online.service

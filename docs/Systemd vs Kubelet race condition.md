@@ -36,6 +36,9 @@ Using sudo or root, run command:
 ```
 systemctl enable systemd-networkd-wait-online.service
 ```
+<img width="1479" height="153" alt="image" src="https://github.com/user-attachments/assets/c6f1a5ac-2e9f-46e0-b7d2-f15a3cb079c8" />
+<br>
+
 
 This enables the `systemd-networkd-wait-online` service, which blocks until all configured network interfaces are up and online before continuing boot dependencies that require the network.
 
@@ -61,6 +64,8 @@ Wants=network-online.target
 [Service]
 ExecStartPre=/bin/sleep 15
 ```
+<img width="1142" height="291" alt="image" src="https://github.com/user-attachments/assets/a07f4494-20dc-4000-a240-b65c526b09bd" />
+
 What this does:
 + `After=network-online.target`
 Ensures Kubelet starts after the network is marked “online” (which now depends on `systemd-networkd-wait-online.service` from Step 1).

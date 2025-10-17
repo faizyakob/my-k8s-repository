@@ -9,7 +9,11 @@
 ## Introduction
 There is a particular issue related to race condition if you are running a local Kubernetes cluster locally. When a Linux VM is started from a power off state, or from a restart, the Kubelet can potentially initialize itself first, before _sytemd_ is able to initialize the VM's networking stack. <br>
 
-This can cause inconveniences to user, as they won't be able to shutdown their VMs and forced to put them in suspended state. Prolong suspended state is not ideal, as VM will still consume the host's RAM. 
+When this happens, all pods will fail to run, and ended up in a broken cluster. 
+
+Quick work around is to suspend the VMs when not in used, instead of shutting them down.
+
+However, this can cause inconveniences to user, as in suspended state, the VM will still consume the host's RAM. 
 
 ## Details
 😡

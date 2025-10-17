@@ -4,9 +4,12 @@
 - [Introduction](#introduction)
 - [Details](#details)
 - [Mitigation](#mitigation)
+- [Outro](#outro)
 
 ## Introduction
 There is a particular issue related to race condition if you are running a local Kubernetes cluster locally. When a Linux VM is started from a power off state, or from a restart, the Kubelet can potentially initialize itself first, before _sytemd_ is able to initialize the VM's networking stack. <br>
+
+This can cause inconveniences to user, as they won't be able to shutdown their VMs and forced to put them in suspended state. Prolong suspended state is not ideal, as VM will still consume the host's RAM. 
 
 ## Details
 😡
@@ -75,3 +78,13 @@ Ensures that the network-online target is pulled in (started) if it’s not alre
 
 + `ExecStartPre=/bin/sleep 15`
 Adds an extra delay (15 seconds) before starting Kubelet — a practical workaround for environments where the network may take a bit longer to stabilize (e.g., cloud VMs, DHCP, or CNI initialization).
+
+## Outro
+
+Once mitigation is configured, Kubelet will wait until the network stack is fully ready before starting itself. 
+CNI pods will properly run soon after, and subsequently other pods. 
+
+This will allow users to shutdown their VMs when not in used, and just turning them bacl on per case basis. 
+
+> Tips: Always start the master or control plane node first, wait for couple of minutes, then only start the worker nodes.
+

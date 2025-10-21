@@ -89,7 +89,7 @@ Adds an extra delay (15 seconds) before starting Kubelet — a practical workaro
 Once mitigation is configured, Kubelet will wait until the network stack is fully ready before starting itself. 
 CNI pods will properly run soon after, and subsequently other pods. 
 
-This will allow users to shutdown their VMs when not in used, and just turning them bacl on per case basis. 
+This will allow users to shutdown their VMs when not in used, and just turning them back on per case basis. 
 
 > Tips: Always start the master or control plane node first, wait for couple of minutes, then only start the worker nodes.
 

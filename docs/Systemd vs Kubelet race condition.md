@@ -7,7 +7,7 @@
 - [Outro](#outro)
 
 ## Introduction
-There is a particular issue related to race condition if you are running a local Kubernetes cluster locally. When a Linux VM is started from a power off state, or from a restart, the Kubelet can potentially initialize itself first, before _sytemd_ is able to initialize the VM's networking stack. <br>
+There is a particular issue related to race condition if you are running a local Kubernetes cluster locally. When a Linux VM is started from a power off state, or from a restart, the Kubelet can potentially initialize itself first, before _systemd_ is able to initialize the VM's networking stack. <br>
 
 When this happens, all pods will fail to run, and ended up in a broken cluster. 
 

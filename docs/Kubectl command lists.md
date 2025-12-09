@@ -1,7 +1,7 @@
 ## Table of Contents
 
 - [Introdcution](#introduction)
-- [using-various-"o"-options](#create-3-vms-from-iso-image)
+- [Using various "o" options](#using-various-"o"-options)
 
 
 ## Introduction

@@ -1,7 +1,7 @@
 ## Table of Contents
 
 - [Introdcution](#introduction)
-- [Create 3 VMs from ISO image](#create-3-vms-from-iso-image)
+- [using-various-"o"-options](#create-3-vms-from-iso-image)
 
 
 ## Introduction

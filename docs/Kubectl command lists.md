@@ -10,5 +10,9 @@ This article list useful kubectl commands separated by categories. It is not mea
 
 ## Using various "o" options
 
+The "-o" option manipulates the output to show more, or less information, about a Kubernetes resource. It's useful if we want to limit the output, or only focus on specific property, for chaining the command to another. 
+
+
+
 
 

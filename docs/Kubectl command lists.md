@@ -27,7 +27,7 @@ myapp-deployment-56db76d944-tmnms   1/1     Running   4 (<invalid> ago)   32d
 ```
 
 <details>
-  <summary> Display with more information</summary><br>
+  <summary> Using "-o wide"</summary><br>
   
 Use ```kubectl get pods -o wide``` to get more information related to the Kubernetes resource.
 
@@ -44,7 +44,7 @@ myapp-deployment-56db76d944-tmnms   1/1     Running   4 (<invalid> ago)   32d   
 </details>
 
 <details>
-  <summary> Display only name</summary><br>
+  <summary> Using "-o name"</summary><br>
   
 Use ```kubectl get pods -o name``` to display the Kubernetes resource in type/name format. 
 
@@ -59,4 +59,67 @@ pod/myapp-deployment-56db76d944-tmnms
 ```
 </details>
 
+<details>
+  <summary> Using "-o jsonpath"</summary><br>
+  
+Use ```kubectl get pods -o jsonpath``` to traverse the resource YAML and get the specific attribute or field.
 
+To display a single pod's name, we use ```kubectl get pod myfirstpod -o jsonpath='{.metadata.name}{"\n"}'```. 
+
+```
+faizyakob@faizyakob-master:~/.kube$ k get pod myfirstpod -o jsonpath='{.metadata.name}{"\n"}'
+myfirstpod
+```
+
+To display all pods name, we use ```kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}'```. 
+
+```
+faizyakob@faizyakob-master:~/.kube$ kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{end}'
+myfirstpod
+mysecondpod
+```
+
+To display additional properties in separate column, we use ```get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.metadata.creationTimestamp}{"\n"}{end}'```. 
+
+```
+faizyakob@faizyakob-master:~/.kube$ k get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.metadata.creationTimestamp}{"\n"}{end}'
+myfirstpod        2025-09-03T13:12:37Z
+mysecondpod        2025-09-03T13:18:21Z
+```
+
+> Note that we need to use _range_ and _items_ if we are displaying all resources of that type.
+
+</details>
+
+<details>
+  <summary> Using "-o custom-columns"</summary><br>
+  
+Use ```kubectl get pods -o custom-columns``` to create customize columns for particular field or attributes.
+
+```
+faizyakob@faizyakob-masternode:~$ kubectl get pods -o name
+pod/faiz-deployment-755bb6f6fc-f5mrd
+pod/faiz-deployment-755bb6f6fc-g7mvc
+pod/faiz-deployment-755bb6f6fc-wbdpr
+pod/myapp-deployment-56db76d944-5t9bb
+pod/myapp-deployment-56db76d944-5wnxv
+pod/myapp-deployment-56db76d944-tmnms
+```
+</details>
+
+<details>
+  <summary> Using "-o json with jq"</summary><br>
+
+**jq** is a 
+Use ```kubectl get pods -o custom-columns``` to create customize columns for particular field or attributes.
+
+```
+faizyakob@faizyakob-masternode:~$ kubectl get pods -o name
+pod/faiz-deployment-755bb6f6fc-f5mrd
+pod/faiz-deployment-755bb6f6fc-g7mvc
+pod/faiz-deployment-755bb6f6fc-wbdpr
+pod/myapp-deployment-56db76d944-5t9bb
+pod/myapp-deployment-56db76d944-5wnxv
+pod/myapp-deployment-56db76d944-tmnms
+```
+</details>

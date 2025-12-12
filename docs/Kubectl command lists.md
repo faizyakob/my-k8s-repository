@@ -95,15 +95,13 @@ mysecondpod        2025-09-03T13:18:21Z
   <summary> Using "-o custom-columns"</summary><br>
   
 Use ```kubectl get pods -o custom-columns``` to create customize columns for particular field or attributes.
+The value syntax is <CUSTOM_COLUMN_NAME>:.<jsonpath_to_the_field>
 
 ```
-faizyakob@faizyakob-masternode:~$ kubectl get pods -o name
-pod/faiz-deployment-755bb6f6fc-f5mrd
-pod/faiz-deployment-755bb6f6fc-g7mvc
-pod/faiz-deployment-755bb6f6fc-wbdpr
-pod/myapp-deployment-56db76d944-5t9bb
-pod/myapp-deployment-56db76d944-5wnxv
-pod/myapp-deployment-56db76d944-tmnms
+faizyakob@faizyakob-master:~/.kube$ k get pods -o custom-columns=PODNAME:.metadata.name,TIMESTAMP:.metadata.creationTimestamp
+PODNAME       TIMESTAMP
+myfirstpod    2025-09-03T13:12:37Z
+mysecondpod   2025-09-03T13:18:21Z
 ```
 </details>
 

@@ -3,6 +3,7 @@
 - [Introdcution](#introduction)
 - [Using various "o" options](#using-various-"o"-options)
 - [Display all available Kubernetes objects](#display-all-available-kubernetes-objects)
+- [Display kubeconfig file content](#display-kubeconfig-file-content)
 
 ## Introduction
 
@@ -134,3 +135,5 @@ configmaps                          cm                                  v1      
 selfsubjectreviews                                                      authentication.k8s.io/v1          false        SelfSubjectReview
 tokenreviews                                                            authentication.k8s.io/v1          false        TokenReview
 ```
+## Display kubeconfig file content
+

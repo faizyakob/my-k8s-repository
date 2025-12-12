@@ -95,7 +95,7 @@ mysecondpod        2025-09-03T13:18:21Z
   <summary> Using "-o custom-columns"</summary><br>
   
 Use ```kubectl get pods -o custom-columns``` to create customize columns for particular field or attributes.
-The value syntax is <CUSTOM_COLUMN_NAME>:.<jsonpath_to_the_field>
+The syntax is <CUSTOM_COLUMN_NAME>:<jsonpath_to_the_field>
 
 ```
 faizyakob@faizyakob-master:~/.kube$ k get pods -o custom-columns=PODNAME:.metadata.name,TIMESTAMP:.metadata.creationTimestamp
@@ -106,18 +106,15 @@ mysecondpod   2025-09-03T13:18:21Z
 </details>
 
 <details>
-  <summary> Using "-o json with jq"</summary><br>
+  <summary> Using "-o json | jq"</summary><br>
 
-**jq** is a 
-Use ```kubectl get pods -o custom-columns``` to create customize columns for particular field or attributes.
-
+Use ```kubectl get pods -o json | jq``` to make the output more pretty.
+> **jq** is a separate binary and is not part of **kubectl**.
 ```
-faizyakob@faizyakob-masternode:~$ kubectl get pods -o name
-pod/faiz-deployment-755bb6f6fc-f5mrd
-pod/faiz-deployment-755bb6f6fc-g7mvc
-pod/faiz-deployment-755bb6f6fc-wbdpr
-pod/myapp-deployment-56db76d944-5t9bb
-pod/myapp-deployment-56db76d944-5wnxv
-pod/myapp-deployment-56db76d944-tmnms
+faizyakob@faizyakob-master:~/.kube$ k get pod mysecondpod -o json | jq
+{
+  "apiVersion": "v1",
+  "kind": "Pod",
+(.... truncated ....)
 ```
 </details>

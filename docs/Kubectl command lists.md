@@ -2,7 +2,7 @@
 
 - [Introdcution](#introduction)
 - [Using various "o" options](#using-various-"o"-options)
-
+- [Display all available Kubernetes objects](#display-all-available-kubernetes-objects)
 
 ## Introduction
 
@@ -82,7 +82,7 @@ mysecondpod
 To display additional properties in separate column, we use ```get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.metadata.creationTimestamp}{"\n"}{end}'```. 
 
 ```
-faizyakob@faizyakob-master:~/.kube$ k get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.metadata.creationTimestamp}{"\n"}{end}'
+faizyakob@faizyakob-master:~/.kube$ kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.metadata.creationTimestamp}{"\n"}{end}'
 myfirstpod        2025-09-03T13:12:37Z
 mysecondpod        2025-09-03T13:18:21Z
 ```
@@ -98,7 +98,7 @@ Use ```kubectl get pods -o custom-columns``` to create customize columns for par
 The syntax is <CUSTOM_COLUMN_NAME>:<jsonpath_to_the_field>
 
 ```
-faizyakob@faizyakob-master:~/.kube$ k get pods -o custom-columns=PODNAME:.metadata.name,TIMESTAMP:.metadata.creationTimestamp
+faizyakob@faizyakob-master:~/.kube$ kubectl get pods -o custom-columns=PODNAME:.metadata.name,TIMESTAMP:.metadata.creationTimestamp
 PODNAME       TIMESTAMP
 myfirstpod    2025-09-03T13:12:37Z
 mysecondpod   2025-09-03T13:18:21Z
@@ -111,10 +111,26 @@ mysecondpod   2025-09-03T13:18:21Z
 Use ```kubectl get pods -o json | jq``` to make the output more pretty.
 > **jq** is a separate binary and is not part of **kubectl**.
 ```
-faizyakob@faizyakob-master:~/.kube$ k get pod mysecondpod -o json | jq
+faizyakob@faizyakob-master:~/.kube$ kubectl get pod mysecondpod -o json | jq
 {
   "apiVersion": "v1",
   "kind": "Pod",
 (.... truncated ....)
 ```
 </details>
+
+## Display all available Kubernetes objects
+
+```
+kubectl api-resources
+```
+This displays all Kubernetes objects, both native (built-in) and CRDs. 
+
+```
+NAME                                SHORTNAMES                          APIVERSION                        NAMESPACED   KIND
+bindings                                                                v1                                true         Binding
+componentstatuses                   cs                                  v1                                false        ComponentStatus
+configmaps                          cm                                  v1                                true         ConfigMap
+selfsubjectreviews                                                      authentication.k8s.io/v1          false        SelfSubjectReview
+tokenreviews                                                            authentication.k8s.io/v1          false        TokenReview
+```

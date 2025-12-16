@@ -196,6 +196,42 @@ ifrit   1/1     Running   0          18m
 ```
 </details>
 
+<details>
+  <summary> Display pod filtered using set-based selection</summary><br>
+  
+For set-based filtering, we have mutiple ways of doing so. 
+
+1. 
+```
+kubectl get pods -l '<key1> in (<value1>,<value2>)'
+```
+Displays all pods who has ```<key1>``` as label, and its value is either <value1> or ```<value2>```.
+> Note that this is an OR operation. Pods which has either ```<value1>``` or ```<value2>``` will be displayed.
+
+Example: ```kubectl get pods -l 'tier in (1,djinn)' -n hell ``` will display pods which have **tier** as its label, and value for **tier** can be either **1** or **djinn**.
+
+2.
+```
+kubectl get pods -l <key1> in (<value1>),<key2> in (<value2>)'
+```
+Displays all pods who has ```<key1>``` as label with value ```<value1>```, and ```<key2>``` as label with value ```<value2>```.
+> Note hat this is an AND operation. Pods must have both labels with correct values.
+
+Example: ```kubectl get pods -l 'tier in (1),type in (demon)' -n hell``` will display pods which have both **tier** and **type** as labels, and their values are **1 **and **demon **respectively.
+
+3. 
+```
+kubectl get pods -l '<key> notin (<value>)'    
+```
+Displays all pods who has ```<key1>``` as label with value ```<value1>```, and ```<key2>``` as label with value ```<value2>```.
+> Note hat this is a negative match.
+
+Example: ```kubectl get pods -l 'tier notin (1)' -n hell``` will display pods which have have **tier** as label, but not **1** as its value.   
+
+</details>
+
+
+
 
 
   

@@ -137,3 +137,18 @@ tokenreviews                                                            authenti
 ```
 ## Display kubeconfig file content
 
+The kubeconfig file is what **kubectl **uses to interact with kube-apiserver. It contains multiple contexts, users, certificate and key for authentication. 
+
+1. Display the current context, user, and cluster. Also displays redacted certificate and    key. 
+    ```
+    kubectl config view
+    ```
+2. Display certificate and key content of the kubeconfig file.
+   > Caution as both are sensitive information.
+   ```
+   kubectl config view --minify --raw -o jsonpath='{.users[0].user.client-certificate-data}' | base64 -d
+   kubectl config view --minify --raw -o jsonpath='{.users[0].user.client-key-data}' | base64 -d
+   ```
+  
+  
+

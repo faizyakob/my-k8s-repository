@@ -226,7 +226,7 @@ kubectl get pods -l '<key> notin (<value>)'
 Displays all pods who has ```<key1>``` as label with value ```<value1>```, and ```<key2>``` as label with value ```<value2>```.
 > Note hat this is a negative match.
 
-Example: ```kubectl get pods -l 'tier notin (1)' -n hell``` will display pods which have have **tier** as label, but not **1** as its value.   
+Example: ```kubectl get pods -l 'tier notin (1)' -n hell``` will display pods which have **tier** as label, but not **1** as its value.   
 
 </details>
 

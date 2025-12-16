@@ -149,6 +149,39 @@ The kubeconfig file is what **kubectl **uses to interact with kube-apiserver. It
    kubectl config view --minify --raw -o jsonpath='{.users[0].user.client-certificate-data}' | base64 -d
    kubectl config view --minify --raw -o jsonpath='{.users[0].user.client-key-data}' | base64 -d
    ```
+## Display resources using labels and selectors
+
+<details>
+  <summary> Display using pod labels</summary><br>
   
+Use ```kubectl get pods -l <key>=<value>``` to display Kubernetes resources having that label. 
+
+```
+faizyakob@faizyakob-masternode:~$ kubectl get pods -l app=myapp
+NAME                                READY   STATUS    RESTARTS            AGE
+myapp-deployment-56db76d944-5t9bb   1/1     Running   5 (<invalid> ago)   36d
+myapp-deployment-56db76d944-5wnxv   1/1     Running   5 (<invalid> ago)   36d
+myapp-deployment-56db76d944-tmnms   1/1     Running   5 (<invalid> ago)   36d
+```
+</details>
+
+<details>
+  <summary> Display pod labels' value with custom columns</summary><br>
+  
+Use ```kubectl get pods -L<key1> -L<key2>``` to display labels' value with own custom columns.
+
+```
+faizyakob@faizyakob-master:~$ kubectl get pods -Ltier -Ltype
+NAME        READY   STATUS    RESTARTS   AGE   TIER   TYPE
+broodlord   1/1     Running   0          25m   1      demon
+dreadlord   1/1     Running   0          25m   1      demon
+ifrit       1/1     Running   0          24m   2      djinn
+succubus    1/1     Running   0          24m   3      banshee
+```
+
+In this example, columns with label's key as name are created, each display the value for the resources.
+</details>
+
+
   
 

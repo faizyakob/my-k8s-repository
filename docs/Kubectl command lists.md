@@ -230,7 +230,37 @@ Example: ```kubectl get pods -l 'tier notin (1)' -n hell``` will display pods wh
 
 </details>
 
+<details>
+  <summary> Display resources filtered using "field-selector"</summary><br>
+  
+We can use "--field-selector" to filter resources using their YAML fields.
+Few examples below.
+> Note that not all fields are supported.
 
+- Display only pods which are currently in **Running** state.
+  ```
+  kubectl get pods --field-selector status.phase=Running
+  ```
+
+- Display services in which are not in default namespace.
+  ```
+  kubectl get services  --all-namespaces --field-selector metadata.namespace!=default
+  ```
+  > Note: Only equality-based is supported.
+
+- Display pods which are not in **Running** state, and has restart policy set to **Always**.
+  ```
+  kubectl get pods --field-selector=status.phase!=Running,spec.restartPolicy=Always
+  ```
+  > Note in this example we chained the selectors.
+
+- Display multiple resources which are not in default namespace.
+  ```
+  kubectl get statefulsets,services --all-namespaces --field-selector metadata.namespace!=default
+  ```
+  > Note: We are not limited to one type of resource at a time.
+  
+</details>
 
 
 

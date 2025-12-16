@@ -4,6 +4,7 @@
 - [Using various "o" options](#using-various-"o"-options)
 - [Display all available Kubernetes objects](#display-all-available-kubernetes-objects)
 - [Display kubeconfig file content](#display-kubeconfig-file-content)
+- [Display resources using labels and selectors](#display-resources-using-labels-and-selectors)
 
 ## Introduction
 
@@ -179,8 +180,22 @@ ifrit       1/1     Running   0          24m   2      djinn
 succubus    1/1     Running   0          24m   3      banshee
 ```
 
-In this example, columns with label's key as name are created, each display the value for the resources.
+In this example, columns with label's key as name are created, each display the corresponding value of the key for each pod.
 </details>
+
+<details>
+  <summary> Display pod filtered using equality-based selection</summary><br>
+  
+Use ```kubectl get pods -l <key1>=<value>,<key2>=<value>``` to display only pods meeting both criteria.
+> Note that this is an AND operation. Only pods that meet all criterias will be displayed.
+
+```
+faizyakob@faizyakob-master:~$ kubectl get pods -l tier=2,type=djinn -n hell               
+NAME    READY   STATUS    RESTARTS   AGE
+ifrit   1/1     Running   0          18m
+```
+</details>
+
 
 
   

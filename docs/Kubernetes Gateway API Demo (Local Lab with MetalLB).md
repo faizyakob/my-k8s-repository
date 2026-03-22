@@ -6,9 +6,12 @@
 - [Architecture Diagram](#architecture-diagram)
 - [Traffic Flow](#traffic-flow)
 - [Prerequisites](#prerequisites)
-- [Step 4: View the pods and services](#step-4-view-the-pods-and-services)
-- [Step 5: Access the web app](#step-5-access-the-web-app)
-- [Conclusion](#conclusion)
+- [Step 1: Install Gateway API](#step-4-view-the-pods-and-services)
+- [Step 2: Install MetalLB](#step-5-access-the-web-app)
+- [Step 3: Configure IP Pool](#)
+- [Step 4: Deploy Sample Apps](#)
+- [Step 5: Gateway Setup](#)
+- [Step 6: HTTPRoute (Path + Host + Header)](#)
 - [Extra: YAML files](#extra-yaml-files)
 
 ## 🧭 Overview
@@ -43,6 +46,7 @@ The traditional **Ingress API** has been widely used but has limitations:
 + 🎯 Rich traffic matching (path, host, headers)
 
 👉 Gateway API is the **next evolution of Ingress**.
+Instead of configuring everything inside an Ingress object, it separates the implementation of listeners (HTTP, TCP, etc) and the URL path itself. 
 
 ## 🏗️ Architecture Diagram
 
@@ -132,6 +136,142 @@ metadata:
   name: l2
   namespace: metallb-system
 ```
+<img width="1688" height="364" alt="image" src="https://github.com/user-attachments/assets/f525031d-16e1-4602-888a-a689c4116d48" />
 
+## 🧪 Step 4: Deploy Sample Apps
 
+Create 2 NGINX deployments, `app1` and `app2`, each with their respective service. 
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app1
+  template:
+    metadata:
+      labels:
+        app: app1
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app1
+spec:
+  selector:
+    app: app1
+  ports:
+  - port: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app2
+  template:
+    metadata:
+      labels:
+        app: app2
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app2
+spec:
+  selector:
+    app: app2
+  ports:
+  - port: 80
+```
+
+<img width="1687" height="118" alt="image" src="https://github.com/user-attachments/assets/ab535e90-7d6e-475e-8989-4bcfe6fdc833" />
+
+## 🚪 Step 5: Gateway Setup
+
+```
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: nginx
+spec:
+  controllerName: gateway.nginx.org/nginx-gateway-controller
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: demo-gateway
+spec:
+  gatewayClassName: nginx
+  listeners:
+  - name: http
+    protocol: HTTP
+    port: 80
+```
+Unlike Ingress, 
+
+<img width="1699" height="819" alt="image" src="https://github.com/user-attachments/assets/e1e21bed-2f9b-48ad-8f54-6c39fa233ee7" />
+
+## 🧭 Step 6: HTTPRoute (Path + Host + Header)
+
+```
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: demo-route
+spec:
+  parentRefs:
+  - name: demo-gateway
+  hostnames:
+  - demo.local
+  rules:
+
+  # Path-based routing
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /app1
+    backendRefs:
+    - name: app1
+      port: 80
+
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /app2
+    backendRefs:
+    - name: app2
+      port: 80
+
+  # Header-based routing
+  - matches:
+    - headers:
+      - name: x-env
+        value: test
+    backendRefs:
+    - name: app2
+      port: 80
+```
++ _.spec.parentRefs_ refers to the Gateway object name we defined earllier.
++ _.spec.hostnames_ refers to the hostname we want to use, which must be configured in `/etc/hosts`.
++ We included 2 sections in the YAML, one for path-based routing, the other for header-based routing.
++ For each condition we want to match, we created _.spec.matches[]_ array item.
++ _.spec.matches[*].backendRefs_ refers to the service that will handled the traffic.
+
+<img width="1695" height="232" alt="image" src="https://github.com/user-attachments/assets/aa20e016-39e7-4a02-afc3-a4d3fb55fcbd" />
 

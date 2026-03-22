@@ -11,7 +11,7 @@
 - [Conclusion](#conclusion)
 - [Extra: YAML files](#extra-yaml-files)
 
-🧭 ## Overview
+## 🧭 Overview
 This guide demonstrates how to **deploy and test Kubernetes Gateway API** in a **local VMware Fusion Pro lab** using:
 + 🖥️ VM-based Kubernetes cluster
 + 🌐 MetalLB (for LoadBalancer IPs)
@@ -28,7 +28,7 @@ It includes:
 + ✅ Architecture diagrams
 + ✅ Gateway API vs Ingress comparison
 
-📜 ## Why Gateway API? (History & Motivation)
+## 📜 Why Gateway API? (History & Motivation)
 
 The traditional **Ingress API** has been widely used but has limitations:
 
@@ -44,7 +44,7 @@ The traditional **Ingress API** has been widely used but has limitations:
 
 👉 Gateway API is the **next evolution of Ingress**.
 
-🏗️ ## Architecture Diagram
+## 🏗️ Architecture Diagram
 
 ```mermaid
 flowchart TD
@@ -66,7 +66,7 @@ flowchart TD
     F --> H
 ```
 
-🔀 ## Traffic Flow
+## 🔀 Traffic Flow
 
 ```mermaid
 flowchart TD
@@ -86,7 +86,7 @@ flowchart TD
     F --> G
 ```
 
-⚙️ ## Prerequisites
+## ⚙️ Prerequisites
 
 + Kubernetes cluster (v1.26+)
 + kubectl configured

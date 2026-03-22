@@ -95,11 +95,40 @@ flowchart TD
 
 ## 📦 Step 1: Install Gateway API
 
-`kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml`
+```
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml
+```
+<img width="1449" height="116" alt="image" src="https://github.com/user-attachments/assets/68f57c84-06a8-4239-aa90-2a915708d7fa" />
 
-## Step 5: Access the web app
+## 📦 Step 2: Install MetalLB
 
-## Conclusion
+```
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
+```
+<img width="1456" height="479" alt="image" src="https://github.com/user-attachments/assets/7afeccf0-e7c1-4c75-8a25-c6a8edf99581" />
+
+Note: If you have installed MetalLB before, the configured resources will simply remained "unchanged".
+
+## 🌐 Step 3: Configure IP Pool
+
+For this, 
+
+```
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: pool
+  namespace: metallb-system
+spec:
+  addresses:
+  - 192.168.56.240-192.168.56.250
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: l2
+  namespace: metallb-system
+```
 
 
 

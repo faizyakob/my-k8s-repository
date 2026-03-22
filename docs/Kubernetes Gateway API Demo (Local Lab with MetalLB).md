@@ -14,6 +14,10 @@
 - [Step 6: HTTPRoute (Path + Host + Header)](#)
 - [Step 7: Configure /etc/hosts](#)
 - [Step 8: Testing](#)
+- [Gateway API vs Ingress](#)
+- [Comparison Example](#)
+- [Troubleshooting](#)
+- [Key Takeaways](#)
 
 
 ## 🧭 Overview

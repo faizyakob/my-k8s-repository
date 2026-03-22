@@ -345,6 +345,12 @@ spec:
     - path:
         type: PathPrefix
         value: /app1
+    filters:
+    - type: URLRewrite
+      urlRewrite:
+        path:
+          type: ReplacePrefixMatch
+          replacePrefixMatch: /
     backendRefs:
     - name: app1
       port: 80
@@ -353,6 +359,12 @@ spec:
     - path:
         type: PathPrefix
         value: /app2
+    filters:
+    - type: URLRewrite
+      urlRewrite:
+        path:
+          type: ReplacePrefixMatch
+          replacePrefixMatch: /
     backendRefs:
     - name: app2
       port: 80
@@ -362,6 +374,12 @@ spec:
     - headers:
       - name: x-env
         value: test
+    filters:
+    - type: URLRewrite
+      urlRewrite:
+        path:
+          type: ReplacePrefixMatch
+          replacePrefixMatch: /
     backendRefs:
     - name: app2
       port: 80

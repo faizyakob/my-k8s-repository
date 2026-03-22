@@ -25,6 +25,7 @@ This guide demonstrates how to **deploy and test Kubernetes Gateway API** in a *
 + 🖥️ VM-based Kubernetes cluster
 + 🌐 MetalLB (for LoadBalancer IPs)
 + 🧾 `/etc/hosts` (for local DNS resolution without public IP)
++ ⚡ Cilium Gateway API (built-in, no extra install needed)
 
 Note:
 + _We opted for host file because for lab we normally do not have a public IP addres lying around, nor does we have a public DNS pointing to it._
@@ -54,13 +55,22 @@ The traditional **Ingress API** has been widely used but has limitations:
 👉 Gateway API is the **next evolution of Ingress**.
 Instead of configuring everything inside an Ingress object, it separates the implementation of listeners (HTTP, TCP, etc) and the URL path itself. 
 
+### 💡 Why Cilium Gateway API?
+Unlike NGINX Gateway Fabric:
++ ❌ No CRD size issues
++ ❌ No extra installation required (already in cluster utilizing Cilium as CNI, just need enablement)
++ ✅ Works out-of-the-box with Cilium CNI
++ ✅ Uses Envoy (production-grade proxy)
+
+👉 Conclusion: Best choice for local labs
+
 ## 🏗️ Architecture Diagram
 
 ```mermaid
 flowchart TD
     A["Client (Browser / curl)"]
     B["MetalLB External IP"]
-    C["Gateway (HTTP Listener :80)"]
+    C["Cilium Gateway (HTTP Listener :80)"]
     D["HTTPRoute (Host + Path + Header)"]
     E["svc-app1"]
     F["svc-app2"]
@@ -98,10 +108,50 @@ flowchart TD
 
 ## ⚙️ Prerequisites
 
-+ Kubernetes cluster (v1.26+)
-+ kubectl configured
-+ VMware Fusion Pro VMs
-+ Same subnet networking
++ Kubernetes cluster with Cilium installed
++ MetalLB installed
++ kubectl access
++ Helm (for enabling Cilium Gateway API)
+
+## ⚠️ Step 0: Enable Cilium Gateway API (REQUIRED)
+
+> If you are using Cilium as CNI, **Gateway API is NOT enabled by default**.
+
+🔍 Check if already enabled
+
+```
+kubectl get gatewayclass
+```
+If you do NOT see:
+`cilium   io.cilium/gateway-controller   True`
+
+👉 Then you must enable it.
+
+🚀 Enable Gateway API in Cilium
+```
+helm upgrade cilium cilium/cilium \
+  --namespace kube-system \
+  --reuse-values \
+  --set gatewayAPI.enabled=true
+```
+
+🔄 Restart Cilium pods
+
+```
+kubectl -n kube-system rollout restart ds cilium
+```
+
+✅ Verify
+
+```
+kubectl get gatewayclass
+```
+Expected:
+NAME     CONTROLLER                      ACCEPTED
+cilium   io.cilium/gateway-controller   True
+
+👉 Only proceed once this is working.
+
 
 ## 📦 Step 1: Install Gateway API
 
@@ -118,34 +168,6 @@ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/confi
 <img width="1456" height="479" alt="image" src="https://github.com/user-attachments/assets/7afeccf0-e7c1-4c75-8a25-c6a8edf99581" />
 
 Note: If you have installed MetalLB before, the configured resources will simply remained "unchanged".
-
-### ⚠️ IMPORTANT: Install a Gateway Controller (Required)
-
-> Gateway API **does nothing by itself**. You MUST install a controller that watches GatewayClass and programs the data plane. Without it, your Gateway will stay in Pending and **no LoadBalancer Service will be created**.
-
-#### Installing NGINX Gateway Fabric
-
-```
-kubectl apply -f https://raw.githubusercontent.com/nginxinc/nginx-gateway-fabric/main/deploy/crds.yaml
-kubectl apply -f https://raw.githubusercontent.com/nginxinc/nginx-gateway-fabric/main/deploy/default/deploy.yaml
-```
-
-Verify controller is running:
-
-```
-kubectl get pods -n nginx-gateway
-```
-
-Verify GatewayClass is accepted:
-
-```
-kubectl get gatewayclass
-```
-
-Expected:
-
-```
-
 
 
 ## 🌐 Step 3: Configure IP Pool

@@ -1,9 +1,9 @@
 ## 🚀 Kubernetes Gateway API Demo (Local Lab with MetalLB)
 ## Table of Contents
 
-- [Introduction](#introduction)
-- [Pre-requisite](#pre-requisite)
-- [Step 1: Create source code files](#step-1-create-source-code-files)
+- [Overview](#overview)
+- [Why Gateway API? (History & Motivation)](#why-gateway-api?-(history-&-motivation))
+- [Architecture Diagram](#architecture-diagram)
 - [Step 2: Helm deployment](#step-2-helm-deployment)
 - [Step 3: Install the Chart](#step-3-install-the-chart)
 - [Step 4: View the pods and services](#step-4-view-the-pods-and-services)
@@ -11,21 +11,38 @@
 - [Conclusion](#conclusion)
 - [Extra: YAML files](#extra-yaml-files)
 
-## Introduction
-I created this article to document how to create a simple web app deployment, utilizing Node.js and MongoDB. 
-The objective is to showcase the relationship between Kubernetes resources, primarily service and deployment. The Node.js will act as the front-end of the application, interfacing with incoming traffic and MongoDB is the backend. 
+## 🧭 Overview
+This guide demonstrates how to **deploy and test Kubernetes Gateway API** in a **local VMware Fusion Pro lab** using:
++ 🖥️ VM-based Kubernetes cluster
++ 🌐 MetalLB (for LoadBalancer IPs)
++ 🧾 `/etc/hosts` (for local DNS resolution without public IP)
 
-## Pre-requisite
+* _Note we opted for host file because for lab we normally do not have a public IP addres lying around, nor does we have a public DNS pointing to it._
 
-The following tools, aside from a running Kubernetes cluster, must be installed on the machine running the commands. Normally this will be the master or control node.
-If you are using jumpbox, then they are installed on the jumpbox itself. 
+It includes:
++ ✅ Path-based routing (`/app1`, `/app2`)
++ ✅ Hostname-based routing
++ ✅ Conditional header-based routing
++ ✅ Architecture diagrams
++ ✅ Gateway API vs Ingress comparison
 
-+ Docker
-+ Helm
+## 📜 Why Gateway API? (History & Motivation)
 
-> The steps below assume _root_ user.
+The traditional **Ingress API** has been widely used but has limitations:
 
-## Step 1: Create source code files
++ ⚠️ Controller-specific annotations (not portable)
++ ⚠️ Limited extensibility
++ ⚠️ Weak separation of concerns
+
+✨ **Gateway API improves this by**:
+
++ 👥 Role-oriented design (infra vs app teams)
++ 🔌 Extensible routing model
++ 🎯 Rich traffic matching (path, host, headers)
+
+👉 Gateway API is the **next evolution of Ingress**.
+
+## 🏗️ Architecture Diagram
 
 + Create a dedicated directory, for example: <code style="color : red">/node-mongo-demo</code>.
   

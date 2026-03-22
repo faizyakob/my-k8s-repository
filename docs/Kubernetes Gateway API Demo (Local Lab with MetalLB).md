@@ -111,7 +111,10 @@ Note: If you have installed MetalLB before, the configured resources will simply
 
 ## 🌐 Step 3: Configure IP Pool
 
-For this, 
+The IP range under _.spec.addresses_ must be reachable from the host. Normally this is the same IP address range used by the nodes. </br>
+Use `kubectl get nodes -o wide` to confirm it. <br>
+Use `ip address` to confirm the CIDR mask. </br>
+Pick a range inside that subnet which won't be used by nodes. For example if the CIDR is /24, pick range at the end, between .240 to .250.
 
 ```
 apiVersion: metallb.io/v1beta1
@@ -121,7 +124,7 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-  - 192.168.56.240-192.168.56.250
+  - 172.16.121.240-172.16.121.250
 ---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement

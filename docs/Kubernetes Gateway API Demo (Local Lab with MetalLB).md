@@ -127,18 +127,31 @@ If you do NOT see:
 
 👉 Then you must enable it.
 
-🚀 Enable Gateway API in Cilium
+🚀 Uninstall current Cilium
 ```
-helm upgrade cilium cilium/cilium \
-  --namespace kube-system \
-  --reuse-values \
-  --set gatewayAPI.enabled=true
+helm uninstall cilium -n kube-system
 ```
 
-🔄 Restart Cilium pods
+🔄 Enable Cilium with Gateway API
+
+```
+helm install cilium cilium/cilium \
+  --namespace kube-system \
+  --create-namespace \
+  --set kubeProxyReplacement=true \
+  --set nodePort.enabled=true \
+  --set operator.replicas=1 \
+  --set gatewayAPI.enabled=true \
+  --set gatewayAPI.deployController=true \
+  --set standaloneDnsProxy.enabled=false \
+  --wait
+```
+
+🔄 Restart Cilium Daemonset and Gateway API controller deployment
 
 ```
 kubectl -n kube-system rollout restart ds cilium
+kubectl -n kube-system rollout restart deployment cilium-operator
 ```
 
 ✅ Verify
@@ -147,8 +160,10 @@ kubectl -n kube-system rollout restart ds cilium
 kubectl get gatewayclass
 ```
 Expected:
+```
 NAME     CONTROLLER                      ACCEPTED
-cilium   io.cilium/gateway-controller   True
+cilium   io.cilium/gateway-controller    True
+```
 
 👉 Only proceed once this is working.
 
@@ -263,28 +278,21 @@ spec:
 
 ```
 apiVersion: gateway.networking.k8s.io/v1
-kind: GatewayClass
-metadata:
-  name: nginx
-spec:
-  controllerName: gateway.nginx.org/nginx-gateway-controller
----
-apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: demo-gateway
 spec:
-  gatewayClassName: nginx
+  gatewayClassName: cilium
   listeners:
   - name: http
     protocol: HTTP
     port: 80
 ```
-Unlike Ingress, 
+Unlike Ingress, only the protocols are configured in Gateway resource. The path configurations are implemented in HTTPRoute resource. 
 
 <img width="1699" height="819" alt="image" src="https://github.com/user-attachments/assets/e1e21bed-2f9b-48ad-8f54-6c39fa233ee7" />
 
-### 🔍 Step 5.1: Verify Gateway is Programmed
+### 🔍 Step 5.1: Verify Gateway 
 
 ```
 kubectl describe gateway demo-gateway
@@ -295,7 +303,7 @@ We should see:
 Status: True
 Addresses:
   Type: IPAddress
-  Value: <MetalLB-IP>
+  Value: 172.16.121.240  # This is IP address assigned to MetalLB. 
 ```
 
 If you see:
@@ -304,6 +312,15 @@ If you see:
 <img width="1696" height="534" alt="image" src="https://github.com/user-attachments/assets/e1a4af0b-4386-46ab-be19-e7dac03e51dc" />
 
 👉 Your controller is not installed or not matching `controllerName`.
+
+### 🔍 Step 5.2: Verify LoadBalancer
+
+```
+kubectl get svc -A | grep LoadBalancer
+```
+👉 You should now see a Cilium-managed service with MetalLB IP
+<img width="1420" height="61" alt="image" src="https://github.com/user-attachments/assets/2ed1eafa-5f7b-44ec-9a83-61014e65814f" />
+
 
 ## 🧭 Step 6: HTTPRoute (Path + Host + Header)
 
@@ -420,6 +437,7 @@ matches:
 ## 🎯 Key Takeaways
 
 + Gateway API is the future of Kubernetes traffic management
++ Cilium Gateway API is simpler for labs
 + MetalLB enables realistic local testing
 + `/etc/hosts` simulates DNS
 + Supports path + host + header routing

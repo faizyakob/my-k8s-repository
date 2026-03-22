@@ -2,22 +2,22 @@
 ## Table of Contents
 
 - [Overview](#overview)
-- [Why Gateway API? (History & Motivation)](#why-gateway-api?-(history-&-motivation))
+- [Why Gateway API? (History & Motivation)](#why-gateway-api-history--motivation)
 - [Architecture Diagram](#architecture-diagram)
 - [Traffic Flow](#traffic-flow)
 - [Prerequisites](#prerequisites)
-- [Step 1: Install Gateway API](#step-4-view-the-pods-and-services)
-- [Step 2: Install MetalLB](#step-5-access-the-web-app)
-- [Step 3: Configure IP Pool](#)
-- [Step 4: Deploy Sample Apps](#)
-- [Step 5: Gateway Setup](#)
-- [Step 6: HTTPRoute (Path + Host + Header)](#)
-- [Step 7: Configure /etc/hosts](#)
-- [Step 8: Testing](#)
-- [Gateway API vs Ingress](#)
-- [Comparison Example](#)
-- [Troubleshooting](#)
-- [Key Takeaways](#)
+- [Step 1: Install Gateway API](#step-1-install-gateway-api)
+- [Step 2: Install MetalLB](#step-2-install-metallb)
+- [Step 3: Configure IP Pool](#step-3-configure-ip-pool)
+- [Step 4: Deploy Sample Apps](#step-4-deploy-sample-apps)
+- [Step 5: Gateway Setup](#step-5-gateway-setup)
+- [Step 6: HTTPRoute (Path + Host + Header)](#step-6-httproute-path--host--header)
+- [Step 7: Configure /etc/hosts](#step-7-configure-etchosts)
+- [Step 8: Testing](#step-8-testing)
+- [Gateway API vs Ingress](#gateway-api-vs-ingress)
+- [Comparison Example](#comparison-example)
+- [Troubleshooting](#troubleshooting)
+- [Key Takeaways](#key-takeaways)
 
 
 ## 🧭 Overview
@@ -290,8 +290,6 @@ spec:
 ```
 Unlike Ingress, only the protocols are configured in Gateway resource. The path configurations are implemented in HTTPRoute resource. 
 
-<img width="1699" height="819" alt="image" src="https://github.com/user-attachments/assets/e1e21bed-2f9b-48ad-8f54-6c39fa233ee7" />
-
 ### 🔍 Step 5.1: Verify Gateway 
 
 ```
@@ -304,8 +302,11 @@ We should see:
 Status: True
 Addresses:
   Type: IPAddress
-  Value: 172.16.121.240  # This is IP address assigned to MetalLB. 
+  Value: 172.16.121.240  # This is IP address assigned to MetalLB.
 ```
+
+<img width="1392" height="474" alt="image" src="https://github.com/user-attachments/assets/38560eaf-bc08-4621-ac45-c4b32da0c748" />
+
 
 If you see:
 

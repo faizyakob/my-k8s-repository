@@ -306,3 +306,47 @@ curl -H "x-env: test" http://demo.local
 
 ## ⚖️ Gateway API vs Ingress
 
+| Feature         | Ingress         | Gateway API    |
+|-----------------|-----------------|----------------|
+| Model           | Single-resource | Multi-resource |
+| Role separation | ❌               | ✅              |
+| Path routing    | ✅               | ✅              |
+| Host routing    | ✅               | ✅              |
+| Header matching | ❌               | ✅              |
+| Extensibility   | Low             | High           |
+| Portability     | Low             | High           |
+
+## 🔍 Comparison Example
+
+### Ingress
+```
+- host: demo.local
+  http:
+    paths:
+    - path: /app1
+```
+
+### Gateway API
+```
+hostnames:
+- demo.local
+matches:
+- path:
+    value: /app1
+```
+
+## 🛠️ Troubleshooting
+
++ ❌ No External IP → Check MetalLB
++ ❌ Route fail → `kubectl describe httproute`
++ ❌ Gateway not ready → `kubectl describe gateway`
+
+## 🎯 Key Takeaways
+
++ Gateway API is the future of Kubernetes traffic management
++ MetalLB enables realistic local testing
++ `/etc/hosts` simulates DNS
++ Supports path + host + header routing
+
+Gateway API is extensively more configurable than Ingress. We can do advance stuffs like HTTPS, filters rewriting, traffic splitting and mult-gateway architecture. 
+Time-permitting, I will include those in later articles.

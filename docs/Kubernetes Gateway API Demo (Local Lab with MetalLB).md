@@ -115,7 +115,7 @@ flowchart TD
 
 ## ⚠️ Step 0: Enable Cilium Gateway API (REQUIRED)
 
-> If you are using Cilium as CNI, **Gateway API is NOT enabled by default**. However, if you follow my other article [Create local Kubernetes cluster](Create local Kubernetes cluster.md), this will already been enabled.
+> If you are using Cilium as CNI, **Gateway API is NOT enabled by default**. However, if you follow my other article [Create local Kubernetes cluster](Create%20local%20Kubernetes%20cluster.md), there is an option to enable this during initial Cilium installation.
 
 🔍 Check if already enabled
 

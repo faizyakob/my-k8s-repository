@@ -4,7 +4,7 @@
 - [Overview](#overview)
 - [Why Gateway API? (History & Motivation)](#why-gateway-api?-(history-&-motivation))
 - [Architecture Diagram](#architecture-diagram)
-- [Step 2: Helm deployment](#step-2-helm-deployment)
+- [Traffic Flow](#traffic-flow)
 - [Step 3: Install the Chart](#step-3-install-the-chart)
 - [Step 4: View the pods and services](#step-4-view-the-pods-and-services)
 - [Step 5: Access the web app](#step-5-access-the-web-app)
@@ -44,247 +44,45 @@ The traditional **Ingress API** has been widely used but has limitations:
 
 ## 🏗️ Architecture Diagram
 
-+ Create a dedicated directory, for example: <code style="color : red">/node-mongo-demo</code>.
-  
-  ```
-  mkdir -p /node-mongo-demo
-  cd /node-mongo-demo
-  ```
-  
-  We will house all source code files here.
+```mermaid
+flowchart TD
+    A["Client (Browser / curl)"]
+    B["MetalLB External IP"]
+    C["Gateway (HTTP Listener :80)"]
+    D["HTTPRoute (Host + Path + Header)"]
+    E["svc-app1"]
+    F["svc-app2"]
+    G["Pods"]
+    H["Pods"]
 
-+ Create a file named _server.js_ with below content. This is our Node.js web app code.
-  
-  ```
-  const express = require('express');
-  const mongoose = require('mongoose');
+    A -->|/etc/hosts| B
+    B --> C
+    C --> D
+    D --> E
+    D --> F
+    E --> G
+    F --> H
+```
 
-  const app = express();
-  const port = 3000;
-  const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost:27017';
+## 🔀 Traffic Flow
 
-  mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('✅ Connected to MongoDB'))
-    .catch(err => console.error('❌ MongoDB connection error:', err));
+```mermaid
+flowchart TD
+    A["demo.local/app1"]
+    B["/etc/hosts"]
+    C["MetalLB IP"]
+    D["Gateway"]
+    E["HTTPRoute match (path=/app1)"]
+    F["Service app1"]
+    G["Pod"]
 
-  app.get('/', (req, res) => {
-    res.send('<h1>Hello from Node.js App running on Kubernetes 🚀</h1>');
-  });
-
-  app.listen(port, () => {
-    console.log(`🟢 Server running at http://localhost:${port}`);
-  });
-  ```
-  
-+ Create a file named _package.json_ with below content.
-  
-  ```
-  {
-  "name": "node-mongo-demo",
-  "version": "1.0.0",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "express": "^4.18.2",
-    "mongoose": "^7.0.0"
-  }
-  }
-  ```
-  
-+ Create a _Dockerfile_.
-  
-  ```
-  FROM node:18-alpine
-
-  WORKDIR /app
-  COPY package*.json ./
-  RUN npm install
-  COPY . .
-
-  EXPOSE 3000
-  CMD ["npm", "start"]
-  ```
-  
-+ Build the new image using the _Dockerfile_.
-  > You will have to login to Docker first before pushing your image.
-
-  Once built, push the image to your Docker Hub repository. 🐳
-  
-  ```
-  # Login to Docker Hub
-  docker login
-
-  # Build the image
-  docker build -t stingray13/node-mongo-demo:latest .
-
-  # Push the image
-  docker push stingray13/node-mongo-demo:latest
-  ```
-  
-+ You can verify using Docker Hub to ensure image successfully uploaded.
-  
-  <img width="921" height="448" alt="image" src="https://github.com/user-attachments/assets/88c324a5-eaa8-4fa9-b5be-fc17c7c9e66a" />
-
-## Step 2: Helm deployment
-> Note: You can also manually deploy all YAML files in this section manually, but we want to demonstrate how Helm can simplify the task.
-
-+ 📕 Create a new folder, for example: <code style="color : red">/helm-node-mongo</code>. Create sub-folder <code style="color : red">templates</code> to host _mongo-deployment.yaml_, _mongo-service.yaml_, _web-deployment.yaml_ and _web-service.yaml_.
-  
-  ```
-  mkdir -p /helm-node-mongo
-  cd /helm-node-mongo
-  ```
-
-  At the end of this step, we should have something like this:
-  
-  ```
-  helm-node-mongo/
-  ├── Chart.yaml
-  ├── values.yaml
-  ├── templates/
-  │   ├── mongo-deployment.yaml
-  │   ├── mongo-service.yaml
-  │   ├── web-deployment.yaml
-  │   └── web-service.yaml
-  ```
-
-  The content of each file is as follows:
-
-  <details>
-  <summary>📃 Chart.yaml</summary><br>
-
-    
-      apiVersion: v2
-      name: node-mongo
-      version: 0.1.0
-      description: A simple Node.js + MongoDB app on Kubernetes
-     
-  
-  </details>
-
-  <details>
-  <summary>📃 values.yaml</summary><br>
-      
-      
-      web:
-        image: faizyakob/node-mongo-demo
-        tag: latest
-        port: 3000
-
-      mongo:
-        user: admin
-        password: admin123
-        port: 27017
- 
-  
-  </details>
-      
-  <details>
-  <summary>📃 templates/mongo-deployment.yaml</summary><br>
- 
-      
-      apiVersion: apps/v1
-      kind: Deployment
-      metadata:
-        name: mongo
-      spec:
-        replicas: 1
-        selector:
-          matchLabels:
-            app: mongo
-        template:
-          metadata:
-            labels:
-              app: mongo
-        spec:
-          containers:
-          - name: mongo
-            image: mongo:5
-            ports:
-            - containerPort: {{ .Values.mongo.port }}
-            env:
-            - name: MONGO_INITDB_ROOT_USERNAME
-              value: {{ .Values.mongo.user }}
-            - name: MONGO_INITDB_ROOT_PASSWORD
-              value: {{ .Values.mongo.password }}
-            volumeMounts:
-            - name: mongo-data
-              mountPath: /data/db
-          volumes:
-          - name: mongo-data
-            emptyDir: {}
-      
-  
-  </details>
-  
-  <details>
-  <summary>📃 templates/mongo-service.yaml</summary><br>
-      
-      
-      apiVersion: v1
-      kind: Service
-      metadata:
-        name: mongo
-      spec:
-        ports:
-        - port: {{ .Values.mongo.port }}
-      selector:
-        app: mongo
-      
-  
-  </details>
-
-  <details>
-  <summary>📃 templates/web-deployment.yaml</summary><br>
- 
-     
-      apiVersion: apps/v1
-      kind: Deployment
-      metadata:
-        name: node-web
-      spec:
-        replicas: 1
-        selector:
-          matchLabels:
-            app: node-web
-      template:
-        metadata:
-          labels:
-            app: node-web
-        spec:
-          containers:
-          - name: node-web
-              image: {{ .Values.web.image }}:{{ .Values.web.tag }}
-              ports:
-              - containerPort: {{ .Values.web.port }}
-              env:
-              - name: MONGO_URL
-                value: mongodb://{{ .Values.mongo.user }}:{{ .Values.mongo.password }}@mongo:27017
-     
-  
-  </details>
-
-  <details>
-  <summary>📃 templates/web-service.yaml</summary><br>
-
-     
-      apiVersion: v1
-      kind: Service
-      metadata:
-        name: node-web
-      spec:
-        type: NodePort
-        ports:
-        - port: 80
-          targetPort: {{ .Values.web.port }}
-          nodePort: 30080
-        selector:
-        app: node-web
-      
-  
-  </details>
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+```
 
 ## Step 3: Install the Chart
 > Ensure you are in the same directory where _Chart.yaml_ is.

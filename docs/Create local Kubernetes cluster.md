@@ -283,6 +283,18 @@ cilium version --client
 cilium install
 ```
 
+🧪 Cilium has many other options that we can enabled during installation. If you plan to use its GatewayAPI controller in the future, it's recommended to supply the parameter now. 
+
+Use following command instead of plain install above.
+```
+cilium install \
+--version $CILIUM_VERSION \
+--kube-proxy-replacement=true \
+--node-port=true \
+--gateway-api=true \
+--wait
+```
+
 <br>
 <img width="956" height="174" alt="image" src="https://github.com/user-attachments/assets/02c59a28-f6d6-4f5d-b4e2-64aecfce9c24" />
 <br>

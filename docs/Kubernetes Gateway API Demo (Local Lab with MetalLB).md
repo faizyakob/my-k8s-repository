@@ -119,6 +119,35 @@ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/confi
 
 Note: If you have installed MetalLB before, the configured resources will simply remained "unchanged".
 
+### ⚠️ IMPORTANT: Install a Gateway Controller (Required)
+
+> Gateway API **does nothing by itself**. You MUST install a controller that watches GatewayClass and programs the data plane. Without it, your Gateway will stay in Pending and **no LoadBalancer Service will be created**.
+
+#### Installing NGINX Gateway Fabric
+
+```
+kubectl apply -f https://raw.githubusercontent.com/nginxinc/nginx-gateway-fabric/main/deploy/crds.yaml
+kubectl apply -f https://raw.githubusercontent.com/nginxinc/nginx-gateway-fabric/main/deploy/default/deploy.yaml
+```
+
+Verify controller is running:
+
+```
+kubectl get pods -n nginx-gateway
+```
+
+Verify GatewayClass is accepted:
+
+```
+kubectl get gatewayclass
+```
+
+Expected:
+
+```
+
+
+
 ## 🌐 Step 3: Configure IP Pool
 
 The IP range under _.spec.addresses_ must be reachable from the host. Normally this is the same IP address range used by the nodes. </br>
@@ -232,6 +261,27 @@ spec:
 Unlike Ingress, 
 
 <img width="1699" height="819" alt="image" src="https://github.com/user-attachments/assets/e1e21bed-2f9b-48ad-8f54-6c39fa233ee7" />
+
+### 🔍 Step 5.1: Verify Gateway is Programmed
+
+```
+kubectl describe gateway demo-gateway
+```
+We should see:
+
+```
+Status: True
+Addresses:
+  Type: IPAddress
+  Value: <MetalLB-IP>
+```
+
+If you see:
+
+`Waiting for controller`
+<img width="1696" height="534" alt="image" src="https://github.com/user-attachments/assets/e1a4af0b-4386-46ab-be19-e7dac03e51dc" />
+
+👉 Your controller is not installed or not matching `controllerName`.
 
 ## 🧭 Step 6: HTTPRoute (Path + Host + Header)
 

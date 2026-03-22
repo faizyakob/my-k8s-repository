@@ -297,6 +297,7 @@ Unlike Ingress, only the protocols are configured in Gateway resource. The path 
 ```
 kubectl describe gateway demo-gateway
 ```
+
 We should see:
 
 ```
@@ -309,9 +310,10 @@ Addresses:
 If you see:
 
 `Waiting for controller`
+
 <img width="1696" height="534" alt="image" src="https://github.com/user-attachments/assets/e1a4af0b-4386-46ab-be19-e7dac03e51dc" />
 
-👉 Your controller is not installed or not matching `controllerName`.
+👉 Your controller is not installed or not matching `controllerName`. Recheck that Cilium Gateway API controller is installed. Refer Step 0).
 
 ### 🔍 Step 5.2: Verify LoadBalancer
 
@@ -319,6 +321,7 @@ If you see:
 kubectl get svc -A | grep LoadBalancer
 ```
 👉 You should now see a Cilium-managed service with MetalLB IP
+
 <img width="1420" height="61" alt="image" src="https://github.com/user-attachments/assets/2ed1eafa-5f7b-44ec-9a83-61014e65814f" />
 
 

@@ -12,7 +12,9 @@
 - [Step 4: Deploy Sample Apps](#)
 - [Step 5: Gateway Setup](#)
 - [Step 6: HTTPRoute (Path + Host + Header)](#)
-- [Extra: YAML files](#extra-yaml-files)
+- [Step 7: Configure /etc/hosts](#)
+- [Step 8: Testing](#)
+
 
 ## 🧭 Overview
 This guide demonstrates how to **deploy and test Kubernetes Gateway API** in a **local VMware Fusion Pro lab** using:
@@ -118,7 +120,7 @@ Note: If you have installed MetalLB before, the configured resources will simply
 The IP range under _.spec.addresses_ must be reachable from the host. Normally this is the same IP address range used by the nodes. </br>
 Use `kubectl get nodes -o wide` to confirm it. <br>
 Use `ip address` to confirm the CIDR mask. </br>
-Pick a range inside that subnet which won't be used by nodes. For example if the CIDR is /24, pick range at the end, between .240 to .250.
+Pick a small range inside that subnet which won't be used by nodes. For example if the CIDR is /24, pick range at the end, between .240 to .250.
 
 ```
 apiVersion: metallb.io/v1beta1
@@ -274,4 +276,33 @@ spec:
 + _.spec.matches[*].backendRefs_ refers to the service that will handled the traffic.
 
 <img width="1695" height="232" alt="image" src="https://github.com/user-attachments/assets/aa20e016-39e7-4a02-afc3-a4d3fb55fcbd" />
+
+## 🧾 Step 7: Configure /etc/hosts
+
+To bypass DNS from the host, we edit the `/etc/hosts` file and included the first IP address for the range picked in Step 3. </br>
+Resolve the chosen hostnae to this IP address.
+
+```
+sudo vim /etc/hosts
+```
+<img width="535" height="370" alt="image" src="https://github.com/user-attachments/assets/2f6e4668-0da7-4160-bf34-d35a208d5826" />
+
+## 🧪 Step 8: Testing
+
+### 🔹 Path-based
+```
+curl http://demo.local/app1
+curl http://demo.local/app2
+```
+
+### 🔹 Header-based routing
+```
+curl -H "x-env: test" http://demo.local
+```
+
+### 🔹 Browser
++ http://demo.local/app1
++ http://demo.local/app2
+
+## ⚖️ Gateway API vs Ingress
 

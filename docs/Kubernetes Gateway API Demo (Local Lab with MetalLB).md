@@ -459,7 +459,7 @@ Even if `/etc/hosts` is correct, this may fail because:
 + MetalLB IP is not reachable from host (NAT limitation)
 + ARP resolution does not work across VM boundary
 
-+ <img width="890" height="95" alt="image" src="https://github.com/user-attachments/assets/8eff99a0-e462-4acc-9a17-fdb4f2cf7589" />
+<img width="890" height="95" alt="image" src="https://github.com/user-attachments/assets/8eff99a0-e462-4acc-9a17-fdb4f2cf7589" />
 
 
 ## ✅ Step 8.3: Use NodePort (Recommended for Lab)

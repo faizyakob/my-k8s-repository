@@ -459,6 +459,9 @@ Even if `/etc/hosts` is correct, this may fail because:
 + MetalLB IP is not reachable from host (NAT limitation)
 + ARP resolution does not work across VM boundary
 
++ <img width="890" height="95" alt="image" src="https://github.com/user-attachments/assets/8eff99a0-e462-4acc-9a17-fdb4f2cf7589" />
+
+
 ## ✅ Step 8.3: Use NodePort (Recommended for Lab)
 
 Get NodePort:
@@ -484,6 +487,9 @@ Example:
 ```
 curl -H "Host: demo.local" http://172.16.121.208:32219/app1
 ```
+
+<img width="870" height="484" alt="image" src="https://github.com/user-attachments/assets/9ab70faa-8163-41ea-9504-e1f2774b6cc1" />
+
 
 ## ✅ Step 8.4: Alternative - Port Forward
 

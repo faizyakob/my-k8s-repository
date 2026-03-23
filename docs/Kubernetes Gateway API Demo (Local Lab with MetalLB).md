@@ -395,19 +395,33 @@ spec:
 ## 🧾 Step 7: Configure /etc/hosts
 
 To bypass DNS from the host, we edit the `/etc/hosts` file and included the first IP address for the range picked in Step 3. </br>
-Resolve the chosen hostnae to this IP address.
+Resolve the chosen hostname to this IP address.
 
 ```
 sudo vim /etc/hosts
 ```
 <img width="535" height="370" alt="image" src="https://github.com/user-attachments/assets/2f6e4668-0da7-4160-bf34-d35a208d5826" />
 
-## 🧪 Step 8: Testing
+
+⚠️ To curl succesfully from the host using `/etc/hosts` bypassing DNS, the networking mode of VMware Fusion Pro has to be in "bridged" mode. If it is configured as "NAT" mode, then it won't work (Refer step 8 below for mitigation). 
+This is due to in NAT mode, the Metal LB loadbalancer IP address is not reachable from the host. 
+
+<img width="890" height="95" alt="image" src="https://github.com/user-attachments/assets/d9a3364b-6c87-4b48-ad90-5e10a47960ac" />
+
+You can re-configure VMware Fusion to use bridge mode, but then this will reset all the node IP addresses, which will mess up the Kuberentes cluster. 
+Alternatively, we can use NodePort to mitigate this.
+
+## 🧪 Step 8: Testing (Important Networking Notes)
+
+⚠️ VMware NAT Limitation
+If your Kubernetes nodes are running on **VMware Fusion (NAT / Host-only network)**:
+> ❌ MetalLB external IP (e.g. 172.16.121.240) may NOT be reachable from your host
+This is because MetalLB uses **Layer 2 (ARP)**, which is not properly supported in NAT mode.
 
 ### 🔹 Path-based
 ```
-curl http://demo.local/app1
-curl http://demo.local/app2
+curl -H "Host: demo.local" http://172.16.121.240/app1
+curl -H "Host: demo.local" http://172.16.121.240/app2
 ```
 
 ### 🔹 Header-based routing
@@ -418,6 +432,112 @@ curl -H "x-env: test" http://demo.local
 ### 🔹 Browser
 + http://demo.local/app1
 + http://demo.local/app2
+
+## ✅ Step 8.1: Test from inside the cluster (Baseline)
+
+Run from your master node:
+
+```
+curl -H "Host: demo.local" http://172.16.121.240/app1
+```
+
+Expected:
+
+```
+Welcome to nginx!
+```
+
+If you get **404 Not Found**, ensure you have configured **URLRewrite filter** in HTTPRoute.
+
+## ⚠️ Step 8.2: Why direct curl from host may fail
+
+```
+curl http://demo.local/app1
+```
+
+Even if `/etc/hosts` is correct, this may fail because:
++ MetalLB IP is not reachable from host (NAT limitation)
++ ARP resolution does not work across VM boundary
+
+## ✅ Step 8.3: Use NodePort (Recommended for Lab)
+
+Get NodePort:
+
+```
+kubectl get svc cilium-gateway-demo-gateway
+```
+
+Example output:
+
+```
+80:32219/TCP
+```
+
+Test from Mac:
+
+```
+curl -H "Host: demo.local" http://<NODE-IP>:32219/app1
+```
+
+Example:
+
+```
+curl -H "Host: demo.local" http://172.16.121.208:32219/app1
+```
+
+## ✅ Step 8.4: Alternative - Port Forward
+
+```
+kubectl port-forward svc/cilium-gateway-demo-gateway 8080:80
+```
+
+Then:
+
+```
+curl -H "Host: demo.local" http://localhost:8080/app1
+```
+
+## 🧠 Step 8.5: Hostname Matching Requirement
+
+Since HTTPRoute uses:
+
+```
+hostnames:
+- demo.local
+```
+
+You MUST include Host header:
+
+```
+curl -H "Host: demo.local" http://<IP>/app1
+```
+
+Otherwise, route will NOT match.
+
+## 🧠 Step 8.6: Path Rewrite Requirement
+
+If using subpaths (`/app1`, `/app2`), backend apps like NGINX expect `/`. </br>
+
+Ensure HTTPRoute includes:
+
+```
+filters:
+- type: URLRewrite
+  urlRewrite:
+    path:
+      type: ReplacePrefixMatch
+      replacePrefixMatch: /
+```
+
+## 🧪 Step 8.7: Final Working Test Matrix
+
+| Scenario        | Command      | Expected   |
+|-----------------|-----------------|----------------|
+| Inside node     | `curl -H "Host: demo.local" http://172.16.121.240/app1` | ✅ Works |
+| Host via LB IP | `curl http://demo.local/app1`               | ❌ May fail (NAT)              |
+| Host via NodePort| `curl -H "Host: demo.local" http://<NODE-IP>:NODEPORT/app1`               | ✅ Works              |
+| Port-forward   | `curl -H "Host: demo.local" http://localhost:8080/app1`               | ✅ Works              |
+
 
 ## ⚖️ Gateway API vs Ingress
 
@@ -460,8 +580,10 @@ matches:
 
 + Gateway API is the future of Kubernetes traffic management
 + Cilium Gateway API is simpler for labs
-+ MetalLB enables realistic local testing
++ MetalLB enables realistic local testing.
++ VMware NAT may block external access to LoadBalancer IP.
 + `/etc/hosts` simulates DNS
++ Subpath routing often requires URL rewrite
 + Supports path + host + header routing
 
 Gateway API is extensively more configurable than Ingress. We can do advance stuffs like HTTPS, filters rewriting, traffic splitting and mult-gateway architecture. 

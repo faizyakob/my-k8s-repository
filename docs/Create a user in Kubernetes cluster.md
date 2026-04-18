@@ -120,7 +120,7 @@ kubectl get csr demo-user
 
 </br>
 👉 Ensure the CSR condition field is showing "Approved,Issued".
-
+</br>
 Extract signed certificate:
 
 ```

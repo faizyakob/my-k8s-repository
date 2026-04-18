@@ -119,8 +119,8 @@ kubectl get csr demo-user
 <img width="1115" height="59" alt="image" src="https://github.com/user-attachments/assets/153a47c0-ccfc-47bc-b7b7-905c921788a1" />
 
 </br>
-👉 Ensure the CSR condition field is showing "Approved,Issued".
-</br>
+👉 Ensure the CSR condition field is showing "Approved,Issued". </br>
+
 
 Extract signed certificate:
 

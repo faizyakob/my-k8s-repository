@@ -184,7 +184,7 @@ Apply:
 kubectl apply -f role.yaml
 ```
 
-❌ Note if you are prompted for username when trying to apply any YAML files after switching the context to `demo-user-context`, chances are the there is an issue with the embedded certificate in Step 5. Check the certificate again and ensure it has the right content. Another sign if the certificate is not properly generated is that there will be no _client-certificate-data_ field under the `demo-user-context` context when running `kubcetl config view`.
+❌ Note if you are prompted for username when trying to apply any YAML files after switching the context to `demo-user-context`, chances are there is an issue with the embedded certificate in Step 5. Check the certificate again and ensure it has the right content. Another sign if the certificate is not properly generated is that there will be no _client-certificate-data_ field under the `demo-user-context` context when running `kubcetl config view`.
 
 ## Step 7: Bind Role to User
 

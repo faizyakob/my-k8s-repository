@@ -119,9 +119,9 @@ kubectl get csr demo-user
 <img width="1115" height="59" alt="image" src="https://github.com/user-attachments/assets/153a47c0-ccfc-47bc-b7b7-905c921788a1" />
 
 </br>
-👉 Ensure the CSR condition field is showing "Approved,Issued". </br>
+👉 Ensure the CSR condition field is showing "**Approved,Issued**". Otherwise, there will be nothing to extract into the certificate in the next command, despite the command being successful</br>
 
-
+</br>
 Extract signed certificate:
 
 ```
@@ -184,7 +184,7 @@ Apply:
 kubectl apply -f role.yaml
 ```
 
-❌ Note if you already switched context to `demo-user-context` following Step 5 above, Kubernetes will prompt you for username. This is due to our `demo-user` which is not fully configured yet, so `kubectl` does not know how to authenticate, hence prompting a username. Switch back to the admin user context to apply the YAML file. Similar when applying YAML in Step 7 below.
+❌ Note if you are prompted for username when trying to apply any YAML files after switching the context to `demo-user-context`, chances are the there is an issue with the embedded certificate in Step 5. Check the certificate again and ensure it has the right content. Another sign if the certificate is not properly generated is that there will be no _client-certificate-data_ field under the `demo-user-context` context when running `kubcetl config view`.
 
 ## Step 7: Bind Role to User
 

@@ -12,7 +12,12 @@
 - [Step 4 — Remove Resource Finalizers]
 - [Step 5 — Force Delete the Namespace]
 - [Force Delete Multiple Namespaces](#force-delete-multiple-namespaces)
-- [Outro](#outro)
+- [Without jq](#without-jq)
+- [Installing jq](#installing-jq)
+- [Important Warning](#important-warning)
+- [Best Practices to Avoid This Issue](#best-practices-to-avoid-this-issue)
+- [Conclusion](#conclusion)
+
 
 ## Introduction
 
@@ -201,3 +206,94 @@ kubectl replace --raw "/api/v1/namespaces/autoscale/finalize" -f ./ns.json
 The namespace should disappear shortly afterward.
 
 ## Force Delete Multiple Namespaces
+
+Using `jq`:
+```
+for ns in autoscale backend cert-manager echo-sound frontend mariadb nginx-static priority relative web-app
+do
+  kubectl get ns $ns -o json | \
+  jq '.spec.finalizers=[]' | \
+  kubectl replace --raw "/api/v1/namespaces/$ns/finalize" -f -
+done
+```
+
+## Without jq
+
+If `jq` is not installed:
+
+```
+for ns in autoscale backend cert-manager echo-sound frontend mariadb nginx-static priority relative web-app
+do
+  kubectl get ns $ns -o json \
+  | sed 's/"kubernetes"//g' \
+  | kubectl replace --raw "/api/v1/namespaces/$ns/finalize" -f -
+done
+```
+
+## Installing jq
+On RHEL / Rocky / AlmaLinux / Fedora:
+```
+sudo dnf install jq -y
+```
+
+On Ubuntu / Debian:
+```
+sudo apt install jq -y
+```
+
+## Important Warning
+
+Force-removing finalizers bypasses cleanup logic.
+
+This may leave orphaned resources inside etcd, especially if:
+
+- CRDs were deleted first
+- Operators were removed improperly
+- External infrastructure cleanup never completed
+
+In lab or CKA environments this is usually acceptable.
+
+In production, always investigate the root cause before force deletion.
+
+## Best Practices to Avoid This Issue
+
+### 1. Delete Resources Before Removing Operators
+
+Incorrect order:
+
+`Delete operator → CRDs disappear → custom resources remain stuck`
+
+Correct order:
+`Delete custom resources → delete operator`
+
+### 2. Monitor APIService Health
+
+Regularly check:
+```
+kubectl get apiservice
+```
+
+### 3. Validate Webhooks
+Broken admission webhooks commonly block deletion.
+
+Inspect:
+```
+kubectl get validatingwebhookconfigurations
+kubectl get mutatingwebhookconfigurations
+```
+
+## Conclusion
+
+Namespaces stuck in `Terminating` are usually caused by:
+
+- Finalizers
+- Broken API services
+- Missing CRDs
+- Admission webhook failures
+
+The safest approach is:
+1. Diagnose the root cause
+2. Remove problematic resources or finalizers
+3. Force finalize only when necessary
+
+Understanding how namespace deletion works is an important Kubernetes troubleshooting skill — especially for cluster administrators and CKA candidates.

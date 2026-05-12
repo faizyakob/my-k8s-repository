@@ -6,11 +6,11 @@
 - [Introduction](#introduction)
 - [The Problem](#the-problem)
 - [Why Namespaces Get Stuck](#why-namespaces-get-stuck)
-- [Step 1 — Check for Broken API Services](#connecting-using-ssh)
-- [Step 2 — Describe the Namespace](#generate-private-and-public-key-pair)
-- [Step 3 — Find Remaining Resources](#modify-sshd-parameters)
-- [Step 4 — Remove Resource Finalizers]
-- [Step 5 — Force Delete the Namespace]
+- [Step 1 — Check for Broken API Services](#step-1--check-for-broken-api-services)
+- [Step 2 — Describe the Namespace](#step-2--describe-the-namespace)
+- [Step 3 — Find Remaining Resources](#step-3--find-remaining-resource)
+- [Step 4 — Remove Resource Finalizers](#step-4--remove-resource-finalizers)
+- [Step 5 — Force Delete the Namespace](#step-5--force-delete-the-namespace)
 - [Force Delete Multiple Namespaces](#force-delete-multiple-namespaces)
 - [Without jq](#without-jq)
 - [Installing jq](#installing-jq)

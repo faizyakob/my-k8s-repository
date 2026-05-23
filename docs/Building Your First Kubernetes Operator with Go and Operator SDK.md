@@ -5,7 +5,7 @@
 ## Table of contents
 
 - [Introduction](#introduction)
-- [The Problem](#the-problem)
+- [Objectives](#objectives)
 - [Why Namespaces Get Stuck](#why-namespaces-get-stuck)
 - [Step 1 — Check for Broken API Services](#step-1--check-for-broken-api-services)
 - [Step 2 — Describe the Namespace](#step-2--describe-the-namespace)
@@ -28,3 +28,34 @@ This mechanism is called the **Operator pattern**. An Operator encodes human ope
 This guide walks you through building a real, working Kubernetes Operator from scratch. You will write Go code, generate CRD manifests, run the operator against a live cluster, and observe the reconcile loop in action. Every step includes an explanation of _why_ it works, not just what to type.
 
 The guide is based on a real session run against a 3-node Kubernetes cluster (1 control plane, 2 worker nodes) running on Red Hat VMs using VMware Fusion, with Operator SDK v1.42 and Go 1.26.
+
+## Objectives
+
+By the end of this guide you will be able to:
+
+- Explain what a Kubernetes Operator is and why it exists
+- Scaffold an operator project using Operator SDK
+- Define a Custom Resource Definition (CRD) with typed spec and status fields
+- Write a controller that reconciles child resources (Deployment, Service, ConfigMap)
+- Understand and use owner references for automatic garbage collection
+- Run an operator locally against a live cluster using `make run`
+- Observe the full reconcile loop from CR creation to resource provisioning
+
+## Prerequisites
+
+### Cluster
+
++ A working Kubernetes cluster (this guide uses 1 control plane + 2 worker nodes)
++ `kubectl` configured and pointing at your cluster
++ Cluster admin permissions
+
+```
+kubectl get nodes
+# NAME         STATUS   ROLES           AGE
+# cplane-01    Ready    control-plane   ...
+# node-01      Ready    <none>          ...
+# node-02      Ready    <none>          ...
+```
+
+### Tools
+

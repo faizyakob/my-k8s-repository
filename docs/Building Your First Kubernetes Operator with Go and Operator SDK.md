@@ -879,7 +879,14 @@ Operator SDK scaffolds an `envtest`-based test suite. Use it to test reconcile l
 
 ## References
 
-- 
+- [Operator SDK Documentation](https://sdk.operatorframework.io/docs/)
+- [controller-runtime Documentation](https://pkg.go.dev/sigs.k8s.io/controller-runtime)
+- [Kubernetes API Conventions](https://github.com/kubernetes/community/blob/main/contributors/devel/sig-architecture/api-conventions.md)
+- [Kubebuilder Book](https://book.kubebuilder.io/)
+- [Kubernetes Custom Resources](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
+
+
+_Written based on a hands-on session with Operator SDK v1.42.2 on Kubernetes v1.33.1 (arm64, Red Hat VMs on VMware Fusion Core). All commands were run and verified against a live 3-node cluster._
 
 
 

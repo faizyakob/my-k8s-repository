@@ -61,7 +61,7 @@ kubectl get nodes
 
 ### Tools
 
-| **Tool** | **Minimum version** |** Check** |
+| **Tool** | **Minimum version** |**Check** |
  |------|-------|-------|
   | Go | 1.21+ | `go version`|
   | Operator SDK | v1.28+ | `operator-sdk version` |

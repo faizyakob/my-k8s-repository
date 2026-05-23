@@ -59,3 +59,32 @@ kubectl get nodes
 
 ### Tools
 
+| **Tool** | **Minimum version** |** Check** |
+ |------|-------|-------|
+  | Go | 1.21+ | `go version`|
+  | Operator SDK | v1.28+ | `operator-sdk version` |
+  | kubectl |v1.25+ | `kubectl version` |
+  | Docker or Podman | any recent | `docker version` or `podman version` |
+
+This guide was tested with:
+
+```
+operator-sdk version: "v1.42.2"
+kubernetes version:   "v1.33.1"
+go version:           "go1.26.3"
+GOARCH:               arm64
+GOOS:                 linux
+```
+
+### Install Operator SDK (if not already installed)
+
+```
+# Linux / arm64 — adjust the filename for your architecture
+curl -LO https://github.com/operator-framework/operator-sdk/releases/latest/download/operator-sdk_linux_arm64
+chmod +x operator-sdk_linux_arm64
+sudo mv operator-sdk_linux_arm64 /usr/local/bin/operator-sdk
+operator-sdk version
+```
+
+> **Note for arm64 users:** All container images referenced in this guide (`nginx`, distroless base) are multi-arch and support arm64 natively. No special handling is required.
+

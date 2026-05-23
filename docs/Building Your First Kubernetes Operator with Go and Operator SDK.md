@@ -298,11 +298,11 @@ func init() {
 
 ### Understanding the types file
 
-`**AppStackSpec` — desired state**
+`AppStackSpec` — **desired state**
 
 This is what the user writes in their YAML under `spec:`. It represents what they want. The operator reads this and tries to make the cluster match it.
 
-`**AppStackStatus` — observed state**
+`AppStackStatus` — **observed state**
 
 This is what the operator writes back after acting. It represents what actually exists. `ReadyReplicas` will reflect how many pods are actually running, which may differ from `spec.replicas` during a rollout.
 
@@ -792,7 +792,7 @@ You wrote zero delete logic. Kubernetes garbage collection handles this entirely
   | **Concept** | Schema that teaches the API server about `AppStack` |
   | **CR**| The YAML a user applies to express desired state |
   | **Reconcile loop** | Called on every relevant change; makes cluster match desired state |
-  | **Idempotency **| Reconcile can run 100 times safely — always converges |
+  | **Idempotency**| Reconcile can run 100 times safely — always converges |
   | **Owner reference** | Links child resources to parent CR; enables cascade delete |
   | **`.Owns()`** | Re-triggers reconcile if a child resource is modified externally |
   | **Status subresource** | Operator writes observed state back to CR; separate from spec |

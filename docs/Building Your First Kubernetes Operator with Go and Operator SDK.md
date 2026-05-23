@@ -526,7 +526,7 @@ func (r *AppStackReconciler) SetupWithManager(mgr ctrl.Manager) error {
 
 ### Understanding the controller
 
-`**Reconcile()` — the entry point**
+`Reconcile()` — **the entry point**
 
 This function is called by controller-runtime every time something relevant happens: an `AppStack` is created, updated, or deleted — or any resource the controller owns (Deployment, Service, ConfigMap) changes. It is the operator's main loop.
 
@@ -544,11 +544,11 @@ Each `reconcileX()` function follows the same three-step pattern:
 
 This is sometimes called the "get-or-create" pattern. It ensures the operator is safe to call repeatedly.
 
-`**ctrl.SetControllerReference()**`
+`ctrl.SetControllerReference()`
 
 This stamps an **owner reference** onto every child resource, linking it back to the `AppStack CR`. Owner references are how Kubernetes knows to garbage-collect child resources when the parent CR is deleted. You write zero delete logic — Kubernetes handles it automatically.
 
-`**cSetupWithManager()` — registering watches**
+`SetupWithManager()` — **registering watches**
 
 This tells controller-runtime what to watch:
 
@@ -790,15 +790,15 @@ You wrote zero delete logic. Kubernetes garbage collection handles this entirely
 | **Concept** | **What it means in practice** |
  |------|-------|
   | **Concept** | Schema that teaches the API server about `AppStack` |
-  | **CR **| The YAML a user applies to express desired state |
+  | **CR**| The YAML a user applies to express desired state |
   | **Reconcile loop** | Called on every relevant change; makes cluster match desired state |
   | **Idempotency **| Reconcile can run 100 times safely — always converges |
   | **Owner reference** | Links child resources to parent CR; enables cascade delete |
-  | `**.Owns()**` | Re-triggers reconcile if a child resource is modified externally |
+  | **`.Owns()`** | Re-triggers reconcile if a child resource is modified externally |
   | **Status subresource** | Operator writes observed state back to CR; separate from spec |
   | **kubebuilder markers** | Comments read by `controller-gen` to produce CRD YAML and RBAC |
-  | `**make run**` | Runs operator locally against a live cluster; ideal for development |
-  | `**make deploy**` | Deploys operator as a pod inside the cluster; production mode |
+  | **`make run`** | Runs operator locally against a live cluster; ideal for development |
+  | **`make deploy`** | Deploys operator as a pod inside the cluster; production mode |
 
 ## Troubleshooting
 

@@ -285,3 +285,76 @@ $ kubectl create ns test-delete
 $ kubectl delete ns test-delete
 # completes instantly, no Terminating limbo
 ```
+
+### Summary
+
+#### The Issue
+
+`kubectl delete ns <namespace>` reported success but the namespace remained stuck in `Terminating` indefinitely, with `NamespaceDeletionDiscoveryFailure: True` and a message about `metrics.k8s.io/v1beta1: stale GroupVersion discovery`.
+
+#### Root Cause Analysis
+
+The chain of causality, from symptom back to root cause:
+
+1. `kubectl delete ns` triggers a finalization process that requires the API server to complete **full API discovery** across all registered API groups.
+2. The `metrics.k8s.io/v1beta1` APIService (backed by `metrics-server`) was `Available: False` with `FailedDiscoveryCheck` — the API server couldn't reach it.
+3. `metrics-server`'s pod was healthy and its Service/port wiring was correct — the problem wasn't the application layer at all.
+4. The control plane node could not reach **any** pod IP on worker nodes, not just the metrics-server Service.
+5. The cluster uses Cilium in VXLAN tunnel mode, which encapsulates pod-to-pod traffic in UDP port 8472.
+6. `firewalld` **on the control plane node did not allow inbound UDP 8472**, silently dropping all VXLAN traffic destined for it. The control plane could send VXLAN packets out, but replies from worker nodes never made it back in.
+7. This made every pod on a worker node unreachable from the control plane — including `metrics-server` — which broke API discovery — which left every namespace deletion stuck in `Terminating` forever.
+
+
+A misleading symptom chain: the visible error pointed at `metrics.k8s.io`, which pointed at `metrics-server`, which pointed at Cilium service routing — when the actual fault was a single missing firewall rule for the CNI's overlay network.
+
+#### Mitigation Steps
+
+**Immediate unblock** (for any namespace currently stuck):
+
+```
+kubectl get namespace <ns> -o json \
+  | jq '.spec.finalizers = []' \
+  | kubectl replace --raw "/api/v1/namespaces/<ns>/finalize" -f -
+```
+
+**Permanent fix** (apply on every node — control plane and workers):
+
+```
+sudo firewall-cmd --permanent --add-port=8472/udp   # Cilium VXLAN overlay
+sudo firewall-cmd --reload
+```
+
+**Recommended firewalld baseline for kubeadm + Cilium (VXLAN) on RHEL:**
+
+```
+# Control plane
+sudo firewall-cmd --permanent --add-port=6443/tcp       # kube-apiserver
+sudo firewall-cmd --permanent --add-port=2379-2380/tcp  # etcd
+sudo firewall-cmd --permanent --add-port=10250/tcp      # kubelet
+sudo firewall-cmd --permanent --add-port=10257/tcp      # kube-controller-manager
+sudo firewall-cmd --permanent --add-port=10259/tcp      # kube-scheduler
+sudo firewall-cmd --permanent --add-port=8472/udp       # Cilium VXLAN
+sudo firewall-cmd --reload
+
+# Worker nodes
+sudo firewall-cmd --permanent --add-port=10250/tcp      # kubelet
+sudo firewall-cmd --permanent --add-port=30000-32767/tcp # NodePort range
+sudo firewall-cmd --permanent --add-port=8472/udp       # Cilium VXLAN
+sudo firewall-cmd --reload
+```
+
+**Verification After Reboot**
+
+```
+kubectl top nodes
+kubectl get apiservice v1beta1.metrics.k8s.io
+```
+
+Both should return healthy results immediately. `firewall-cmd --permanent` rules persist across reboots, as do Cilium configmap and Deployment specs (stored in etcd) — so once applied, this fix holds permanently.
+
+**Lessons Learned**
+
++ A pod being `1/1 Running` does not mean it's _reachable_ — Service, routing, and firewall layers all sit between "running" and "working."
++ When an APIService shows `FailedDiscoveryCheck`, test raw connectivity (`curl`, `ping`) to the pod IP directly, not just the ClusterIP, and not just from one node.
++ `tcpdump` on the overlay network port is the fastest way to spot a one-way tunnel — outbound packets with no replies is a classic firewall signature.
++ On RHEL-based nodes, `firewalld` is active by default and does **not** know about CNI overlay ports unless explicitly told. Always check `firewall-cmd --list-all` early when CNI-mode networking misbehaves.

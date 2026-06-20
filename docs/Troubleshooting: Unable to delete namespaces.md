@@ -1,16 +1,16 @@
 
 ## Table of Contents
 
-- [The Namespace That Wouldn't Die: A VXLAN Firewall Mystery](#download-a-linux-distro)
-- [Act 1: The Namespace That Refused to Leave](#create-3-vms-from-iso-image)
-- [Act 2: "But My Metrics Server Is Running Fine!"](#step-1-prepare-each-node)
-- [Act 3: Down the Cilium Rabbit Hole](#step-2-initiate-kubernetes-cluster-control-node-only)
-- [Act 4: A Detour Through hostNetwork (and a Self-Inflicted Wound)](#step-3-joining-worker-nodes-to-cluster-worker-nodes-only)
-- [Act 5: Checking the Service Wiring](#step-4-test-cluster-access-control-node-only)
-- [Act 6: Going Lower — Can the Control Plane Even Reach the Pod?](#step-5-optional-settings-control-node-only)
-- [Act 7: The Tunnel That Only Worked One Way](#conclusion)
-- [Act 8: The Fix](#extra-scripts)
-- [Summary](#extra-scripts)
+- [The Namespace That Wouldn't Die: A VXLAN Firewall Mystery](#the-namespace-that-wouldnt-die-a-vxlan-firewall-mystery)
+- [Act 1: The Namespace That Refused to Leave](#act-1-the-namespace-that-refused-to-leave)
+- [Act 2: "But My Metrics Server Is Running Fine!"](#act-2-but-my-metrics-server-is-running-fine)
+- [Act 3: Down the Cilium Rabbit Hole](#act-3-down-the-cilium-rabbit-hole)
+- [Act 4: A Detour Through hostNetwork (and a Self-Inflicted Wound)](#act-4-a-detour-through-hostnetwork-and-a-self-inflicted-wound)
+- [Act 5: Checking the Service Wiring](#act-5-checking-the-service-wiring)
+- [Act 6: Going Lower — Can the Control Plane Even Reach the Pod?](#act-6-going-lower--can-the-control-plane-even-reach-the-pod)
+- [Act 7: The Tunnel That Only Worked One Way](#act-7-the-tunnel-that-only-worked-one-way)
+- [Act 8: The Fix](#act-8-the-fix)
+- [Summary](#summary)
 
 🥥 In this article I summarized the findings and actions performed when I was troubleshooting my namespaces deletion issue to resolve it. The issue was I kept encountering trouble when deleting the namespaces after I no longer needed them. The namespaces deletion always stuck, and sure, I can use quick fix in [Clearing namespaces stuck in "Terminanting" state](./Clearing%20namespaces%20stuck%20in%20%22Terminanting%22%20state.md), but I am looking for a permanent fix. The root cause might be different for your cluster, but listing mine for education purposes. 
 

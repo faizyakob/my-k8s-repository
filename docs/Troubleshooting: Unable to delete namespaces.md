@@ -2,14 +2,15 @@
 ## Table of Contents
 
 - [The Namespace That Wouldn't Die: A VXLAN Firewall Mystery](#download-a-linux-distro)
-- [Create 3 VMs from ISO image](#create-3-vms-from-iso-image)
-- [Step 1: Prepare each node](#step-1-prepare-each-node)
-- [Step 2: Initiate Kubernetes cluster (control node only)](#step-2-initiate-kubernetes-cluster-control-node-only)
-- [Step 3: Joining worker nodes to cluster (worker nodes only)](#step-3-joining-worker-nodes-to-cluster-worker-nodes-only)
-- [Step 4: Test cluster access (control node only)](#step-4-test-cluster-access-control-node-only)
-- [Step 5: Optional settings (control node only)](#step-5-optional-settings-control-node-only)
-- [Conclusion](#conclusion)
-- [Extra: Scripts](#extra-scripts)
+- [Act 1: The Namespace That Refused to Leave](#create-3-vms-from-iso-image)
+- [Act 2: "But My Metrics Server Is Running Fine!"](#step-1-prepare-each-node)
+- [Act 3: Down the Cilium Rabbit Hole](#step-2-initiate-kubernetes-cluster-control-node-only)
+- [Act 4: A Detour Through hostNetwork (and a Self-Inflicted Wound)](#step-3-joining-worker-nodes-to-cluster-worker-nodes-only)
+- [Act 5: Checking the Service Wiring](#step-4-test-cluster-access-control-node-only)
+- [Act 6: Going Lower — Can the Control Plane Even Reach the Pod?](#step-5-optional-settings-control-node-only)
+- [Act 7: The Tunnel That Only Worked One Way](#conclusion)
+- [Act 8: The Fix](#extra-scripts)
+- [Summary](#extra-scripts)
 
 🥥 In this article I summarized the findings and actions performed when I was troubleshooting my namespaces deletion issue to resolve it. The issue was I kept encountering trouble when deleting the namespaces after I no longer needed them. The namespaces deletion always stuck, and sure, I can use quick fix in [Clearing namespaces stuck in "Terminanting" state](./Clearing%20namespaces%20stuck%20in%20%22Terminanting%22%20state.md), but I am looking for a permanent fix. The root cause might be different for your cluster, but listing mine for education purposes. 
 

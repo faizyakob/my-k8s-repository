@@ -30,7 +30,7 @@ This article explains:
 - Multiple ways to fix it safely
 - How to force-delete namespaces when necessary
   
-🚧 The method in this article is a band-aid solution to quickly remove stuck namespaces. If same issue keeps re-occuring, there is a possibility that something else is broken in the cluster. For my cluster at least, I have documented the journey of finding the real cause of the issue at . Do pay a visit if interested. 😸
+🚧 The method in this article is a band-aid solution to quickly remove stuck namespaces. If same issue keeps re-occuring, there is a possibility that something else is broken in the cluster. For my cluster at least, I have documented the journey of finding the real cause of the issue at [Troubleshooting: Unable to delete namespaces.md](<Troubleshooting: Unable to delete namespaces.md>). Do pay a visit if interested. 😸
 
 ## The Problem
 

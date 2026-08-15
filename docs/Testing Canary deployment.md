@@ -105,10 +105,10 @@ If you are using a jumpbox, then they are installed on the jumpbox itself.
   docker login
 
   # Build the image
-  docker build -t faizyakob/colorapp:1.0 .
+  docker build -t stingray13/colorapp:1.0 .
 
   # Push the image
-  docker push faizyakob/colorapp:1.0
+  docker push stingray13/colorapp:1.0
   ```
 
 ## Step 3: Deploy the existing (stable) version, v1
@@ -137,7 +137,7 @@ If you are using a jumpbox, then they are installed on the jumpbox itself.
       spec:
         containers:
         - name: colorapp
-          image: faizyakob/colorapp:1.0
+          image: stingray13/colorapp:1.0
           ports:
           - containerPort: 8080
           env:
@@ -207,7 +207,7 @@ At this point, 100% of traffic is going to <code style="color : red">v1</code>, 
       spec:
         containers:
         - name: colorapp
-          image: faizyakob/colorapp:1.0
+          image: stingray13/colorapp:1.0
           ports:
           - containerPort: 8080
           env:

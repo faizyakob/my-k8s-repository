@@ -34,7 +34,7 @@ It includes:
 Most of us treat pod-to-pod networking as a black box — you write a Service, pods magically talk to each other, done. But when things break (a `CrashLoopBackOff` that's actually a DNS timeout, a `NetworkPolicy` silently dropping traffic, cross-node latency that shouldn't exist), you need a mental model of what's *actually* moving packets under the hood.
 
 This ties directly into two things I care about:
-+ 🔧 On the AON side, I regularly dig into Cilium networking issues on customer clusters — this is the theory behind that debugging.
++ 🔧 On the Nexus side, starting from NC 4.13 Cilium will gradually replace Calico as the CNI.
 + 📚 On the homelab side, this is the natural follow-up to my [`du` vs `df`](https://github.com/faizyakob/my-linux-repo/blob/main/du-vd-df.md) and [SELinux](https://github.com/faizyakob/my-linux-repo/blob/main/SELINUX.md) articles — same "don't trust the abstraction, go look at the kernel" approach, applied to networking.
 
 ## 🖥️ Lab Environment

@@ -186,19 +186,24 @@ tunnel-source-port-range                          0-0
 ```mermaid
 flowchart LR
     subgraph N1["k8s-w1 (172.16.121.219)"]
+        direction LR
         A["Pod A<br/>10.0.1.102"]
+        H1["host netns<br/>tc/BPF egress"]
         V1["cilium_vxlan<br/>encap"]
+        A -->|veth pair| H1
+        H1 --> V1
     end
     subgraph N2["k8s-w2 (172.16.121.220)"]
-        B["Pod B<br/>10.0.2.186"]
+        direction LR
         V2["cilium_vxlan<br/>decap"]
+        H2["host netns<br/>tc/BPF ingress"]
+        B["Pod B<br/>10.0.2.186"]
+        V2 --> H2
+        H2 -->|veth pair| B
     end
-    A -->|"1. veth to host ns"| N1
-    N1 -->|"2. tc/BPF egress decision"| V1
-    V1 -->|"3. VXLAN encap:<br/>outer UDP/8472,<br/>172.16.121.219 → .220"| V2
-    V2 -->|"4. decap → original<br/>10.0.1.102 → 10.0.2.186 packet"| N2
-    N2 -->|"5. veth into Pod B ns"| B
+    V1 -->|"VXLAN encap:<br/>outer UDP/8472<br/>.219 → .220"| V2
 ```
+
 
 Whatever the mode, the Kubernetes contract holds: Pod A's packet leaves with source IP `10.0.1.102` and destination `10.0.2.186`, and it arrives at Pod B with those exact IPs — **no NAT anywhere in this path**. VXLAN only adds and removes an *outer* header; the inner packet (the one your applications actually see) is untouched end to end.
 

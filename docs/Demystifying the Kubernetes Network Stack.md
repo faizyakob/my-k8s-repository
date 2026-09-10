@@ -114,6 +114,7 @@ ip link show type veth
 kubectl get pod <pod-name> -o jsonpath='{.status.podIP}'
 cilium-dbg endpoint list   # shows pod IP <-> lxc interface <-> veth mapping
 ```
+<img width="1362" height="173" alt="image" src="https://github.com/user-attachments/assets/cbaeaad2-936f-42dd-a89a-c25c51907bc0" />
 
 On the node, these veth "host ends" attach into the CNI's datapath. With bridge-based CNIs (Flannel, older Calico modes) that datapath is a Linux bridge (`cbr0`/`cni0`) doing L2 forwarding. With Cilium, there's no bridge at all — each veth is individually attached to the eBPF datapath, and routing/forwarding decisions happen in BPF programs attached to the veth's `tc` (traffic control) hooks, not via a bridge or iptables.
 
